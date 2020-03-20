@@ -1,0 +1,5575 @@
+default namespace = "http://www.dg.org/ns/nonTEI"
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+namespace rng = "http://relaxng.org/ns/structure/1.0"
+namespace sch = "http://purl.oclc.org/dsdl/schematron"
+namespace tei = "http://www.tei-c.org/ns/1.0"
+namespace teix = "http://www.tei-c.org/ns/Examples"
+namespace xi = "http://www.w3.org/2001/XInclude"
+namespace xlink = "http://www.w3.org/1999/xlink"
+
+# Schema generated from ODD source 2017-12-11T14:04:14Z. .
+# TEI Edition: Version 3.2.0. Last updated on
+#	10th July 2017, revision 0fcf651
+# TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.2.0/
+#
+
+#
+gdmacro.paraContent =
+  (text
+   | gdmodel.gLike
+   | gdmodel.phrase
+   | gdmodel.inter
+   | gdmodel.global
+   | gdlg
+   | gdmodel.lLike)*
+gdmacro.limitedContent = (text | gdmodel.limitedPhrase | gdmodel.inter)*
+gdmacro.phraseSeq =
+  (text | gdmodel.gLike | gdmodel.phrase | gdmodel.global)*
+gdmacro.phraseSeq.limited =
+  (text | gdmodel.limitedPhrase | gdmodel.global)*
+gdmacro.specialPara =
+  (text
+   | gdmodel.gLike
+   | gdmodel.phrase
+   | gdmodel.inter
+   | gdmodel.divPart
+   | gdmodel.global)*
+gdmacro.anyXML = text | anyElement-macro.anyXML
+gddata.pointer = xsd:anyURI
+anyElement-macro.anyXML =
+  element * - (tei:* | teix:egXML) {
+    attribute * { text }*,
+    (text | anyElement-macro.anyXML)*
+  }
+anyElement-xenoData =
+  element * - (tei:* | teix:egXML) {
+    attribute * { text }*,
+    (text | anyElement-xenoData)*
+  }
+gdatt.ascribed.attributes = gdatt.ascribed.attribute.who
+gdatt.ascribed.attribute.who =
+  
+  ## indicates the person, or group of people, to whom the element content is ascribed.
+  attribute who {
+    list { xsd:anyURI+ }
+  }?
+gdatt.canonical.attributes =
+  gdatt.canonical.attribute.key, gdatt.canonical.attribute.ref
+gdatt.canonical.attribute.key =
+  
+  ## provides an externally-defined means of identifying the entity (or entities) being named, using a coded value of some kind.
+  attribute key { xsd:string }?
+gdatt.canonical.attribute.ref =
+  
+  ## (reference) provides an explicit means of locating a full definition or identity for the entity being named by means of one or more URIs.
+  attribute ref {
+    list { xsd:anyURI+ }
+  }?
+gdatt.ranging.attributes =
+  gdatt.ranging.attribute.atLeast,
+  gdatt.ranging.attribute.atMost,
+  gdatt.ranging.attribute.min,
+  gdatt.ranging.attribute.max,
+  gdatt.ranging.attribute.confidence
+gdatt.ranging.attribute.atLeast =
+  
+  ## gives a minimum estimated value for the approximate measurement.
+  attribute atLeast {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.ranging.attribute.atMost =
+  
+  ## gives a maximum estimated value for the approximate measurement.
+  attribute atMost {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.ranging.attribute.min =
+  
+  ## where the measurement summarizes more than one observation or a range, supplies the minimum value observed.
+  attribute min {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.ranging.attribute.max =
+  
+  ## where the measurement summarizes more than one observation or a range, supplies the maximum value observed.
+  attribute max {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.ranging.attribute.confidence =
+  
+  ## specifies the degree of statistical confidence (between zero and one) that a value falls within the range specified by min and max, or the proportion of observed values that fall within that range.
+  attribute confidence { xsd:double }?
+gdatt.dimensions.attributes =
+  gdatt.ranging.attributes,
+  gdatt.dimensions.attribute.unit,
+  gdatt.dimensions.attribute.quantity,
+  gdatt.dimensions.attribute.extent,
+  gdatt.dimensions.attribute.precision,
+  gdatt.dimensions.attribute.scope
+gdatt.dimensions.attribute.unit =
+  
+  ## names the unit used for the measurement
+  ## Suggested values include: 1] cm(centimetres) ; 2] mm(millimetres) ; 3] in(inches) ; 4] lines; 5] chars(characters) 
+  attribute unit {
+    
+    ## (centimetres) 
+    "cm"
+    | 
+      ## (millimetres) 
+      "mm"
+    | 
+      ## (inches) 
+      "in"
+    | 
+      ## lines of text
+      "lines"
+    | 
+      ## (characters) characters of text
+      "chars"
+    | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.dimensions.attribute.quantity =
+  
+  ## specifies the length in the units specified
+  attribute quantity {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.dimensions.attribute.extent =
+  
+  ## indicates the size of the object concerned using a project-specific vocabulary combining quantity and units in a single string of words.
+  attribute extent { xsd:string }?
+gdatt.dimensions.attribute.precision =
+  
+  ## characterizes the precision of the values specified by the other attributes.
+  attribute precision {
+    
+    ##
+    "high"
+    | 
+      ##
+      "medium"
+    | 
+      ##
+      "low"
+    | 
+      ##
+      "unknown"
+  }?
+gdatt.dimensions.attribute.scope =
+  
+  ## where the measurement summarizes more than one observation, specifies the applicability of this measurement.
+  ## Sample values include: 1] all; 2] most; 3] range
+  attribute scope {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.written.attributes = gdatt.written.attribute.hand
+gdatt.written.attribute.hand =
+  
+  ## points to a handNote element describing the hand considered responsible for the textual content of the element concerned.
+  attribute hand { xsd:anyURI }?
+gdatt.breaking.attributes = gdatt.breaking.attribute.break
+gdatt.breaking.attribute.break =
+  
+  ## indicates whether or not the element bearing this attribute should be considered to mark the end of an orthographic token in the same way as whitespace.
+  attribute break {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.cReferencing.attributes = gdatt.cReferencing.attribute.cRef
+gdatt.cReferencing.attribute.cRef =
+  
+  ## (canonical reference) specifies the destination of the pointer by supplying a canonical reference expressed using the scheme defined in a refsDecl element in the TEI header
+  attribute cRef { xsd:string }?
+gdatt.datable.w3c.attributes =
+  gdatt.datable.w3c.attribute.when,
+  gdatt.datable.w3c.attribute.notBefore,
+  gdatt.datable.w3c.attribute.notAfter,
+  gdatt.datable.w3c.attribute.from,
+  gdatt.datable.w3c.attribute.to
+gdatt.datable.w3c.attribute.when =
+  
+  ## supplies the value of the date or time in a standard form, e.g. yyyy-mm-dd.
+  attribute when {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+gdatt.datable.w3c.attribute.notBefore =
+  
+  ## specifies the earliest possible date for the event in standard form, e.g. yyyy-mm-dd.
+  attribute notBefore {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+gdatt.datable.w3c.attribute.notAfter =
+  
+  ## specifies the latest possible date for the event in standard form, e.g. yyyy-mm-dd.
+  attribute notAfter {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+gdatt.datable.w3c.attribute.from =
+  
+  ## indicates the starting point of the period in standard form, e.g. yyyy-mm-dd.
+  attribute from {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+gdatt.datable.w3c.attribute.to =
+  
+  ## indicates the ending point of the period in standard form, e.g. yyyy-mm-dd.
+  attribute to {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+sch:pattern [
+  id =
+    "Goglia_TEI-att.datable.w3c-att-datable-w3c-when-constraint-rule-1"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@when]"
+    "\x{a}" ~
+    "        "
+    sch:report [
+      role = "nonfatal"
+      test = "@notBefore|@notAfter|@from|@to"
+      "The @when attribute cannot be used with any other att.datable.w3c attributes."
+    ]
+    "\x{a}" ~
+    "      "
+  ]
+  "\x{a}" ~
+  "   "
+]
+sch:pattern [
+  id =
+    "Goglia_TEI-att.datable.w3c-att-datable-w3c-from-constraint-rule-2"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@from]"
+    "\x{a}" ~
+    "        "
+    sch:report [
+      role = "nonfatal"
+      test = "@notBefore"
+      "The @from and @notBefore attributes cannot be used together."
+    ]
+    "\x{a}" ~
+    "      "
+  ]
+  "\x{a}" ~
+  "   "
+]
+sch:pattern [
+  id = "Goglia_TEI-att.datable.w3c-att-datable-w3c-to-constraint-rule-3"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@to]"
+    "\x{a}" ~
+    "        "
+    sch:report [
+      role = "nonfatal"
+      test = "@notAfter"
+      "The @to and @notAfter attributes cannot be used together."
+    ]
+    "\x{a}" ~
+    "      "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.datable.attributes =
+  gdatt.datable.w3c.attributes,
+  gdatt.datable.iso.attributes,
+  gdatt.datable.custom.attributes,
+  gdatt.datable.attribute.calendar,
+  gdatt.datable.attribute.period
+gdatt.datable.attribute.calendar =
+  
+  ## indicates the system or calendar to which the date represented by the content of this element belongs.
+  attribute calendar { xsd:anyURI }?
+sch:pattern [
+  id = "Goglia_TEI-att.datable-calendar-calendar-constraint-rule-4"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@calendar]"
+    "\x{a}" ~
+    "            "
+    sch:assert [
+      test = "string-length(.) gt 0"
+      "\x{a}" ~
+      "@calendar indicates the system or calendar to which the date represented by the content of this element\x{a}" ~
+      "belongs, but this "
+      sch:name [ ]
+      " element has no textual content."
+    ]
+    "\x{a}" ~
+    "          "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.datable.attribute.period =
+  
+  ## supplies a pointer to some location defining a named period of time within which the datable item is understood to have occurred.
+  attribute period { xsd:anyURI }?
+gdatt.declarable.attributes = gdatt.declarable.attribute.default
+gdatt.declarable.attribute.default =
+  
+  ## indicates whether or not this element is selected by default when its parent is selected.
+  [ a:defaultValue = "false" ]
+  attribute default {
+    
+    ## This element is selected if its parent is selected
+    "true"
+    | 
+      ## This element can only be selected explicitly, unless it is the only one of its kind, in which case it is selected if its parent is selected.
+      "false"
+  }?
+gdatt.declaring.attributes = gdatt.declaring.attribute.decls
+gdatt.declaring.attribute.decls =
+  
+  ## identifies one or more declarable elements within the header, which are understood to apply to the element bearing this attribute and its content.
+  attribute decls {
+    list { xsd:anyURI+ }
+  }?
+gdatt.fragmentable.attributes = gdatt.fragmentable.attribute.part
+gdatt.fragmentable.attribute.part =
+  
+  ## specifies whether or not its parent element is fragmented in some way, typically by some other overlapping structure: for example a speech which is divided between two or more verse stanzas, a paragraph which is split across a page division, a verse line which is divided between two speakers.
+  [ a:defaultValue = "N" ]
+  attribute part {
+    
+    ## (yes) the element is fragmented in some (unspecified) respect
+    "Y"
+    | 
+      ## (no) the element is not fragmented, or no claim is made as to its completeness
+      "N"
+    | 
+      ## (initial) this is the initial part of a fragmented element
+      "I"
+    | 
+      ## (medial) this is a medial part of a fragmented element
+      "M"
+    | 
+      ## (final) this is the final part of a fragmented element
+      "F"
+  }?
+gdatt.divLike.attributes =
+  gdatt.fragmentable.attributes,
+  gdatt.divLike.attribute.org,
+  gdatt.divLike.attribute.sample
+gdatt.divLike.attribute.org =
+  
+  ## (organization) specifies how the content of the division is organized.
+  [ a:defaultValue = "uniform" ]
+  attribute org {
+    
+    ## no claim is made about the sequence in which the immediate contents of this division are to be processed, or their inter-relationships.
+    "composite"
+    | 
+      ## the immediate contents of this element are regarded as forming a logical unit, to be processed in sequence.
+      "uniform"
+  }?
+gdatt.divLike.attribute.sample =
+  
+  ## indicates whether this division is a sample of the original source and if so, from which part.
+  [ a:defaultValue = "complete" ]
+  attribute sample {
+    
+    ## division lacks material present at end in source.
+    "initial"
+    | 
+      ## division lacks material at start and end.
+      "medial"
+    | 
+      ## division lacks material at start.
+      "final"
+    | 
+      ## position of sampled material within original unknown.
+      "unknown"
+    | 
+      ## division is not a sample.
+      "complete"
+  }?
+gdatt.docStatus.attributes = gdatt.docStatus.attribute.status
+gdatt.docStatus.attribute.status =
+  
+  ## describes the status of a document either currently or, when associated with a dated element, at the time indicated.
+  ## Sample values include: 1] approved; 2] candidate; 3] cleared; 4] deprecated; 5] draft; 6] embargoed; 7] expired; 8] frozen; 9] galley; 10] proposed; 11] published; 12] recommendation; 13] submitted; 14] unfinished; 15] withdrawn
+  [ a:defaultValue = "draft" ]
+  attribute status {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.global.responsibility.attributes =
+  gdatt.global.responsibility.attribute.cert,
+  gdatt.global.responsibility.attribute.resp
+gdatt.global.responsibility.attribute.cert =
+  
+  ## (certainty) signifies the degree of certainty associated with the intervention or interpretation.
+  attribute cert {
+    xsd:double
+    | (
+       ##
+       "high"
+       | 
+         ##
+         "medium"
+       | 
+         ##
+         "low"
+       | 
+         ##
+         "unknown")
+  }?
+gdatt.global.responsibility.attribute.resp =
+  
+  ## (responsible party) indicates the agency responsible for the intervention or interpretation, for example an editor or transcriber.
+  attribute resp {
+    list { xsd:anyURI+ }
+  }?
+gdatt.editLike.attributes =
+  gdatt.dimensions.attributes,
+  gdatt.editLike.attribute.evidence,
+  gdatt.editLike.attribute.instant
+gdatt.editLike.attribute.evidence =
+  
+  ## indicates the nature of the evidence supporting the reliability or accuracy of the intervention or interpretation.
+  ## Suggested values include: 1] internal; 2] external; 3] conjecture
+  attribute evidence {
+    list {
+      (
+       ## there is internal evidence to support the intervention.
+       "internal"
+       | 
+         ## there is external evidence to support the intervention.
+         "external"
+       | 
+         ## the intervention or interpretation has been made by the editor, cataloguer, or scholar on the basis of their expertise.
+         "conjecture"
+       | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" })+
+    }
+  }?
+gdatt.editLike.attribute.instant =
+  
+  ## indicates whether this is an instant revision or not.
+  [ a:defaultValue = "false" ]
+  attribute instant {
+    xsd:boolean
+    | (
+       ##
+       "unknown"
+       | 
+         ##
+         "inapplicable")
+  }?
+gdatt.global.rendition.attributes =
+  gdatt.global.rendition.attribute.rend,
+  gdatt.global.rendition.attribute.style,
+  gdatt.global.rendition.attribute.rendition
+gdatt.global.rendition.attribute.rend =
+  
+  ## (rendition) indicates how the element in question was rendered or presented in the source text.
+  attribute rend {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.global.rendition.attribute.style =
+  
+  ## contains an expression in some formal style definition language which defines the rendering or presentation used for this element in the source text
+  attribute style { xsd:string }?
+gdatt.global.rendition.attribute.rendition =
+  
+  ## points to a description of the rendering or presentation used for this element in the source text.
+  attribute rendition {
+    list { xsd:anyURI+ }
+  }?
+gdatt.global.source.attributes = gdatt.global.source.attribute.source
+gdatt.global.source.attribute.source =
+  
+  ## specifies the source from which some aspect of this element is drawn.
+  attribute source {
+    list { xsd:anyURI+ }
+  }?
+gdatt.global.attributes =
+  gdatt.global.rendition.attributes,
+  gdatt.global.responsibility.attributes,
+  gdatt.global.source.attributes,
+  gdatt.global.attribute.xmlid,
+  gdatt.global.attribute.n,
+  gdatt.global.attribute.xmllang,
+  gdatt.global.attribute.xmlbase,
+  gdatt.global.attribute.xmlspace
+gdatt.global.attribute.xmlid =
+  
+  ## (identifier) provides a unique identifier for the element bearing the attribute.
+  attribute xml:id { xsd:ID }?
+gdatt.global.attribute.n =
+  
+  ## (number) gives a number (or other label) for an element, which is not necessarily unique within the document.
+  attribute n { xsd:string }?
+gdatt.global.attribute.xmllang =
+  
+  ## (language) indicates the language of the element content using a tag generated according to BCP 47.
+  attribute xml:lang {
+    xsd:language
+    | (
+       ##
+       "")
+  }?
+gdatt.global.attribute.xmlbase =
+  
+  ## provides a base URI reference with which applications can resolve relative URI references into absolute URI references.
+  attribute xml:base { xsd:anyURI }?
+gdatt.global.attribute.xmlspace =
+  
+  ## signals an intention about how white space should be managed by applications.
+  attribute xml:space {
+    
+    ## signals that the application's default white-space processing modes are acceptable
+    "default"
+    | 
+      ## indicates the intent that applications preserve all white space
+      "preserve"
+  }?
+gdatt.handFeatures.attribute.scribe =
+  
+  ## gives a name or other identifier for the scribe believed to be responsible for this hand.
+  attribute scribe { xsd:Name }?
+gdatt.handFeatures.attribute.scribeRef =
+  
+  ## points to a full description of the scribe concerned, typically supplied by a person element elsewhere in the description.
+  attribute scribeRef {
+    list { xsd:anyURI+ }
+  }?
+gdatt.handFeatures.attribute.script =
+  
+  ## characterizes the particular script or writing style used by this hand, for example secretary, copperplate, Chancery, Italian, etc.
+  attribute script {
+    list { xsd:Name+ }
+  }?
+gdatt.handFeatures.attribute.scriptRef =
+  
+  ## points to a full description of the script or writing style used by this hand, typically supplied by a scriptNote element elsewhere in the description.
+  attribute scriptRef {
+    list { xsd:anyURI+ }
+  }?
+gdatt.handFeatures.attribute.medium =
+  
+  ## describes the tint or type of ink, e.g. brown, or other writing medium, e.g. pencil
+  attribute medium {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.handFeatures.attribute.scope =
+  
+  ## specifies how widely this hand is used in the manuscript.
+  attribute scope {
+    
+    ## only this hand is used throughout the manuscript
+    "sole"
+    | 
+      ## this hand is used through most of the manuscript
+      "major"
+    | 
+      ## this hand is used occasionally in the manuscript
+      "minor"
+  }?
+gdatt.internetMedia.attributes = gdatt.internetMedia.attribute.mimeType
+gdatt.internetMedia.attribute.mimeType =
+  
+  ## (MIME media type) specifies the applicable multimedia internet mail extension (MIME) media type
+  attribute mimeType {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.media.attributes =
+  gdatt.internetMedia.attributes,
+  gdatt.media.attribute.width,
+  gdatt.media.attribute.height,
+  gdatt.media.attribute.scale
+gdatt.media.attribute.width =
+  
+  ## Where the media are displayed, indicates the display width
+  attribute width {
+    xsd:token {
+      pattern =
+        "[\-+]?\d+(\.\d+)?(%|cm|mm|in|pt|pc|px|em|ex|gd|rem|vw|vh|vm)"
+    }
+  }?
+gdatt.media.attribute.height =
+  
+  ## Where the media are displayed, indicates the display height
+  attribute height {
+    xsd:token {
+      pattern =
+        "[\-+]?\d+(\.\d+)?(%|cm|mm|in|pt|pc|px|em|ex|gd|rem|vw|vh|vm)"
+    }
+  }?
+gdatt.media.attribute.scale =
+  
+  ## Where the media are displayed, indicates a scale factor to be applied when generating the desired display size
+  attribute scale {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.resourced.attributes = gdatt.resourced.attribute.url
+gdatt.resourced.attribute.url =
+  
+  ## (uniform resource locator) specifies the URL from which the media concerned may be obtained.
+  attribute url { xsd:anyURI }
+gdatt.measurement.attributes =
+  gdatt.measurement.attribute.unit,
+  gdatt.measurement.attribute.quantity,
+  gdatt.measurement.attribute.commodity
+gdatt.measurement.attribute.unit =
+  
+  ## indicates the units used for the measurement, usually using the standard symbol for the desired units.
+  ## Suggested values include: 1] m(metre) ; 2] kg(kilogram) ; 3] s(second) ; 4] Hz(hertz) ; 5] Pa(pascal) ; 6] Ω(ohm) ; 7] L(litre) ; 8] t(tonne) ; 9] ha(hectare) ; 10] Å(ångström) ; 11] mL(millilitre) ; 12] cm(centimetre) ; 13] dB(decibel) ; 14] kbit(kilobit) ; 15] Kibit(kibibit) ; 16] kB(kilobyte) ; 17] KiB(kibibyte) ; 18] MB(megabyte) ; 19] MiB(mebibyte) 
+  attribute unit {
+    
+    ## (metre) SI base unit of length
+    "m"
+    | 
+      ## (kilogram) SI base unit of mass
+      "kg"
+    | 
+      ## (second) SI base unit of time
+      "s"
+    | 
+      ## (hertz) SI unit of frequency
+      "Hz"
+    | 
+      ## (pascal) SI unit of pressure or stress
+      "Pa"
+    | 
+      ## (ohm) SI unit of electric resistance
+      "Ω"
+    | 
+      ## (litre) 1 dm³
+      "L"
+    | 
+      ## (tonne) 10³ kg
+      "t"
+    | 
+      ## (hectare) 1 hm²
+      "ha"
+    | 
+      ## (ångström) 10⁻¹⁰ m
+      "Å"
+    | 
+      ## (millilitre) 
+      "mL"
+    | 
+      ## (centimetre) 
+      "cm"
+    | 
+      ## (decibel) see remarks, below
+      "dB"
+    | 
+      ## (kilobit) 10³ or 1000 bits
+      "kbit"
+    | 
+      ## (kibibit) 2¹⁰ or 1024 bits
+      "Kibit"
+    | 
+      ## (kilobyte) 10³ or 1000 bytes
+      "kB"
+    | 
+      ## (kibibyte) 2¹⁰ or 1024 bytes
+      "KiB"
+    | 
+      ## (megabyte) 10⁶ or 1 000 000 bytes
+      "MB"
+    | 
+      ## (mebibyte) 2²⁰ or 1 048 576 bytes
+      "MiB"
+    | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.measurement.attribute.quantity =
+  
+  ## specifies the number of the specified units that comprise the measurement
+  attribute quantity {
+    xsd:double
+    | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+    | xsd:decimal
+  }?
+gdatt.measurement.attribute.commodity =
+  
+  ## indicates the substance that is being measured
+  attribute commodity {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.naming.attributes =
+  gdatt.canonical.attributes,
+  gdatt.naming.attribute.role,
+  gdatt.naming.attribute.nymRef
+gdatt.naming.attribute.role =
+  
+  ## may be used to specify further information about the entity referenced by this name in the form of a set of whitespace-separated values, for example the occupation of a person, or the status of a place.
+  attribute role {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.naming.attribute.nymRef =
+  
+  ## (reference to the canonical name) provides a means of locating the canonical form (nym) of the names associated with the object named by the element bearing it.
+  attribute nymRef {
+    list { xsd:anyURI+ }
+  }?
+gdatt.placement.attributes = gdatt.placement.attribute.place
+gdatt.placement.attribute.place =
+  
+  ## specifies where this item is placed.
+  ## Suggested values include: 1] below; 2] bottom; 3] margin; 4] top; 5] opposite; 6] overleaf; 7] above; 8] end; 9] inline; 10] inspace
+  attribute place {
+    list {
+      (
+       ## below the line
+       "below"
+       | 
+         ## at the foot of the page
+         "bottom"
+       | 
+         ## in the margin (left, right, or both)
+         "margin"
+       | 
+         ## at the top of the page
+         "top"
+       | 
+         ## on the opposite, i.e. facing, page
+         "opposite"
+       | 
+         ## on the other side of the leaf
+         "overleaf"
+       | 
+         ## above the line
+         "above"
+       | 
+         ## at the end of e.g. chapter or volume.
+         "end"
+       | 
+         ## within the body of the text.
+         "inline"
+       | 
+         ## in a predefined space, for example left by an earlier scribe.
+         "inspace"
+       | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" })+
+    }
+  }?
+gdatt.typed.attributes =
+  gdatt.typed.attribute.type, gdatt.typed.attribute.subtype
+gdatt.typed.attribute.type =
+  
+  ## characterizes the element in some sense, using any convenient classification scheme or typology.
+  attribute type {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.typed.attribute.subtype =
+  
+  ## provides a sub-categorization of the element, if needed
+  attribute subtype {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+sch:pattern [
+  id = "Goglia_TEI-att.typed-subtypeTyped-constraint-rule-5"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@subtype]"
+    "\x{a}" ~
+    "        "
+    sch:assert [
+      test = "@type"
+      "The "
+      sch:name [ ]
+      " element should not be categorized in detail with @subtype unless also categorized in general with @type"
+    ]
+    "\x{a}" ~
+    "      "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.pointing.attributes =
+  gdatt.pointing.attribute.targetLang,
+  gdatt.pointing.attribute.target,
+  gdatt.pointing.attribute.evaluate
+gdatt.pointing.attribute.targetLang =
+  
+  ## specifies the language of the content to be found at the destination referenced by target, using a language tag generated according to BCP 47.
+  attribute targetLang {
+    xsd:language
+    | (
+       ##
+       "")
+  }?
+sch:pattern [
+  id = "Goglia_TEI-att.pointing-targetLang-targetLang-constraint-rule-6"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[not(self::tei:schemaSpec)][@targetLang]"
+    "\x{a}" ~
+    "            "
+    sch:assert [
+      test = "@target"
+      "@targetLang should only be used on "
+      sch:name [ ]
+      " if @target is specified."
+    ]
+    "\x{a}" ~
+    "          "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.pointing.attribute.target =
+  
+  ## specifies the destination of the reference by supplying one or more URI References
+  attribute target {
+    list { xsd:anyURI+ }
+  }?
+gdatt.pointing.attribute.evaluate =
+  
+  ## specifies the intended meaning when the target of a pointer is itself a pointer.
+  attribute evaluate {
+    
+    ## if the element pointed to is itself a pointer, then the target of that pointer will be taken, and so on, until an element is found which is not a pointer.
+    "all"
+    | 
+      ## if the element pointed to is itself a pointer, then its target (whether a pointer or not) is taken as the target of this pointer.
+      "one"
+    | 
+      ## no further evaluation of targets is carried out beyond that needed to find the element specified in the pointer's target.
+      "none"
+  }?
+gdatt.sortable.attributes = gdatt.sortable.attribute.sortKey
+gdatt.sortable.attribute.sortKey =
+  
+  ## supplies the sort key for this element in an index, list or group which contains it.
+  attribute sortKey {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.edition.attributes =
+  gdatt.edition.attribute.ed, gdatt.edition.attribute.edRef
+gdatt.edition.attribute.ed =
+  
+  ## (edition) supplies a sigil or other arbitrary identifier for the source edition in which the associated feature (for example, a page, column, or line break) occurs at this point in the text.
+  attribute ed {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.edition.attribute.edRef =
+  
+  ## (edition reference) provides a pointer to the source edition in which the associated feature (for example, a page, column, or line break) occurs at this point in the text.
+  attribute edRef {
+    list { xsd:anyURI+ }
+  }?
+gdatt.spanning.attributes = gdatt.spanning.attribute.spanTo
+gdatt.spanning.attribute.spanTo =
+  
+  ## indicates the end of a span initiated by the element bearing this attribute.
+  attribute spanTo { xsd:anyURI }?
+sch:pattern [
+  id = "Goglia_TEI-att.spanning-spanTo-spanTo-2-constraint-rule-7"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@spanTo]"
+    "\x{a}" ~
+    "            "
+    sch:assert [
+      test =
+        "id(substring(@spanTo,2)) and following::*[@xml:id=substring(current()/@spanTo,2)]"
+      "\x{a}" ~
+      "The element indicated by @spanTo ("
+      sch:value-of [ select = "@spanTo" ]
+      ") must follow the current element "
+      sch:name [ ]
+      "\x{a}" ~
+      "                  "
+    ]
+    "\x{a}" ~
+    "          "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.styleDef.attributes =
+  gdatt.styleDef.attribute.scheme,
+  gdatt.styleDef.attribute.schemeVersion
+gdatt.styleDef.attribute.scheme =
+  
+  ## identifies the language used to describe the rendition.
+  attribute scheme {
+    
+    ## Cascading Stylesheet Language
+    "css"
+    | 
+      ## Extensible Stylesheet Language Formatting Objects
+      "xslfo"
+    | 
+      ## Informal free text description
+      "free"
+    | 
+      ## A user-defined rendition description language
+      "other"
+  }?
+gdatt.styleDef.attribute.schemeVersion =
+  
+  ## supplies a version number for the style language provided in scheme.
+  attribute schemeVersion {
+    xsd:token { pattern = "[\d]+[a-z]*[\d]*(\.[\d]+[a-z]*[\d]*){0,3}" }
+  }?
+sch:pattern [
+  id =
+    "Goglia_TEI-att.styleDef-schemeVersion-schemeVersionRequiresScheme-constraint-rule-8"
+  "\x{a}" ~
+  "      "
+  sch:rule [
+    context = "tei:*[@schemeVersion]"
+    "\x{a}" ~
+    "            "
+    sch:assert [
+      test = "@scheme and not(@scheme = 'free')"
+      "\x{a}" ~
+      "              @schemeVersion can only be used if @scheme is specified.\x{a}" ~
+      "            "
+    ]
+    "\x{a}" ~
+    "          "
+  ]
+  "\x{a}" ~
+  "   "
+]
+gdatt.timed.attributes =
+  gdatt.timed.attribute.start, gdatt.timed.attribute.end
+gdatt.timed.attribute.start =
+  
+  ## indicates the location within a temporal alignment at which this element begins.
+  attribute start { xsd:anyURI }?
+gdatt.timed.attribute.end =
+  
+  ## indicates the location within a temporal alignment at which this element ends.
+  attribute end { xsd:anyURI }?
+gdatt.transcriptional.attributes =
+  gdatt.editLike.attributes,
+  gdatt.written.attributes,
+  gdatt.transcriptional.attribute.status,
+  gdatt.transcriptional.attribute.cause,
+  gdatt.transcriptional.attribute.seq
+gdatt.transcriptional.attribute.status =
+  
+  ## indicates the effect of the intervention, for example in the case of a deletion, strikeouts which include too much or too little text, or in the case of an addition, an insertion which duplicates some of the text already present.
+  ## Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] excessEnd; 5] shortStart; 6] shortEnd; 7] partial; 8] unremarkable
+  [ a:defaultValue = "unremarkable" ]
+  attribute status {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.transcriptional.attribute.cause =
+  
+  ## documents the presumed cause for the intervention.
+  attribute cause {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.transcriptional.attribute.seq =
+  
+  ## (sequence) assigns a sequence number related to the order in which the encoded features carrying this attribute are believed to have occurred.
+  attribute seq { xsd:nonNegativeInteger }?
+gdatt.translatable.attributes = gdatt.translatable.attribute.versionDate
+gdatt.translatable.attribute.versionDate =
+  
+  ## specifies the date on which the source text was extracted and sent to the translator
+  attribute versionDate {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+  }?
+gdatt.citing.attributes =
+  gdatt.citing.attribute.unit,
+  gdatt.citing.attribute.from,
+  gdatt.citing.attribute.to
+gdatt.citing.attribute.unit =
+  
+  ## identifies the unit of information conveyed by the element, e.g. columns, pages, volume, entry.
+  ## Suggested values include: 1] volume; 2] issue; 3] page; 4] line; 5] chapter; 6] part; 7] column; 8] entry
+  attribute unit {
+    
+    ## the element contains a volume number.
+    "volume"
+    | 
+      ## the element contains an issue number, or volume and issue numbers.
+      "issue"
+    | 
+      ## the element contains a page number or page range.
+      "page"
+    | 
+      ## the element contains a line number or line range.
+      "line"
+    | 
+      ## the element contains a chapter indication (number and/or title)
+      "chapter"
+    | 
+      ## the element identifies a part of a book or collection.
+      "part"
+    | 
+      ## the element identifies an entry number or label in a list of entries.
+      "column"
+    | 
+      ## the element identifies a column.
+      "entry"
+    | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.citing.attribute.from =
+  
+  ## specifies the starting point of the range of units indicated by the unit attribute.
+  attribute from {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdatt.citing.attribute.to =
+  
+  ## specifies the end-point of the range of units indicated by the unit attribute.
+  attribute to {
+    xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }?
+gdmodel.nameLike.agent = gdname | gdorgName | gdpersName
+gdmodel.nameLike.agent_alternation = gdname | gdorgName | gdpersName
+gdmodel.nameLike.agent_sequence = gdname, gdorgName, gdpersName
+gdmodel.nameLike.agent_sequenceOptional =
+  gdname?, gdorgName?, gdpersName?
+gdmodel.nameLike.agent_sequenceOptionalRepeatable =
+  gdname*, gdorgName*, gdpersName*
+gdmodel.nameLike.agent_sequenceRepeatable =
+  gdname+, gdorgName+, gdpersName+
+gdmodel.segLike = notAllowed
+gdmodel.hiLike = gdhi
+gdmodel.hiLike_alternation = gdhi
+gdmodel.hiLike_sequence = gdhi
+gdmodel.hiLike_sequenceOptional = gdhi?
+gdmodel.hiLike_sequenceOptionalRepeatable = gdhi*
+gdmodel.hiLike_sequenceRepeatable = gdhi+
+gdmodel.emphLike =
+  gdforeign
+  | gdemph
+  | gddistinct
+  | gdmentioned
+  | gdsoCalled
+  | gdgloss
+  | gdterm
+  | gdtitle
+gdmodel.emphLike_alternation =
+  gdforeign
+  | gdemph
+  | gddistinct
+  | gdmentioned
+  | gdsoCalled
+  | gdgloss
+  | gdterm
+  | gdtitle
+gdmodel.emphLike_sequence =
+  gdforeign,
+  gdemph,
+  gddistinct,
+  gdmentioned,
+  gdsoCalled,
+  gdgloss,
+  gdterm,
+  gdtitle
+gdmodel.emphLike_sequenceOptional =
+  gdforeign?,
+  gdemph?,
+  gddistinct?,
+  gdmentioned?,
+  gdsoCalled?,
+  gdgloss?,
+  gdterm?,
+  gdtitle?
+gdmodel.emphLike_sequenceOptionalRepeatable =
+  gdforeign*,
+  gdemph*,
+  gddistinct*,
+  gdmentioned*,
+  gdsoCalled*,
+  gdgloss*,
+  gdterm*,
+  gdtitle*
+gdmodel.emphLike_sequenceRepeatable =
+  gdforeign+,
+  gdemph+,
+  gddistinct+,
+  gdmentioned+,
+  gdsoCalled+,
+  gdgloss+,
+  gdterm+,
+  gdtitle+
+gdmodel.highlighted = gdmodel.hiLike | gdmodel.emphLike
+gdmodel.dateLike = gddate | gdtime
+gdmodel.dateLike_alternation = gddate | gdtime
+gdmodel.dateLike_sequence = gddate, gdtime
+gdmodel.dateLike_sequenceOptional = gddate?, gdtime?
+gdmodel.dateLike_sequenceOptionalRepeatable = gddate*, gdtime*
+gdmodel.dateLike_sequenceRepeatable = gddate+, gdtime+
+gdmodel.measureLike = gdnum | gdmeasure | gdmeasureGrp | gdgeo
+gdmodel.measureLike_alternation =
+  gdnum | gdmeasure | gdmeasureGrp | gdgeo
+gdmodel.measureLike_sequence = gdnum, gdmeasure, gdmeasureGrp, gdgeo
+gdmodel.measureLike_sequenceOptional =
+  gdnum?, gdmeasure?, gdmeasureGrp?, gdgeo?
+gdmodel.measureLike_sequenceOptionalRepeatable =
+  gdnum*, gdmeasure*, gdmeasureGrp*, gdgeo*
+gdmodel.measureLike_sequenceRepeatable =
+  gdnum+, gdmeasure+, gdmeasureGrp+, gdgeo+
+gdmodel.egLike = notAllowed
+gdmodel.egLike_alternation = notAllowed
+gdmodel.egLike_sequence = empty
+gdmodel.egLike_sequenceOptional = empty
+gdmodel.egLike_sequenceOptionalRepeatable = empty
+gdmodel.egLike_sequenceRepeatable = notAllowed
+gdmodel.graphicLike = gdmedia | gdgraphic | gdbinaryObject
+gdmodel.offsetLike = gdoffset | gdgeogFeat
+gdmodel.offsetLike_alternation = gdoffset | gdgeogFeat
+gdmodel.offsetLike_sequence = gdoffset, gdgeogFeat
+gdmodel.offsetLike_sequenceOptional = gdoffset?, gdgeogFeat?
+gdmodel.offsetLike_sequenceOptionalRepeatable = gdoffset*, gdgeogFeat*
+gdmodel.offsetLike_sequenceRepeatable = gdoffset+, gdgeogFeat+
+gdmodel.pPart.msdesc = notAllowed
+gdmodel.pPart.editorial = gdchoice | gdabbr | gdexpan
+gdmodel.pPart.editorial_alternation = gdchoice | gdabbr | gdexpan
+gdmodel.pPart.editorial_sequence = gdchoice, gdabbr, gdexpan
+gdmodel.pPart.editorial_sequenceOptional = gdchoice?, gdabbr?, gdexpan?
+gdmodel.pPart.editorial_sequenceOptionalRepeatable =
+  gdchoice*, gdabbr*, gdexpan*
+gdmodel.pPart.editorial_sequenceRepeatable =
+  gdchoice+, gdabbr+, gdexpan+
+gdmodel.pPart.transcriptional =
+  gdsic | gdcorr | gdreg | gdorig | gdadd | gddel | gdunclear
+gdmodel.pPart.transcriptional_alternation =
+  gdsic | gdcorr | gdreg | gdorig | gdadd | gddel | gdunclear
+gdmodel.pPart.transcriptional_sequence =
+  gdsic, gdcorr, gdreg, gdorig, gdadd, gddel, gdunclear
+gdmodel.pPart.transcriptional_sequenceOptional =
+  gdsic?, gdcorr?, gdreg?, gdorig?, gdadd?, gddel?, gdunclear?
+gdmodel.pPart.transcriptional_sequenceOptionalRepeatable =
+  gdsic*, gdcorr*, gdreg*, gdorig*, gdadd*, gddel*, gdunclear*
+gdmodel.pPart.transcriptional_sequenceRepeatable =
+  gdsic+, gdcorr+, gdreg+, gdorig+, gdadd+, gddel+, gdunclear+
+gdmodel.pPart.edit =
+  gdmodel.pPart.editorial | gdmodel.pPart.transcriptional
+gdmodel.ptrLike = gdptr | gdref
+gdmodel.lPart = notAllowed
+gdmodel.global.meta = gdindex
+gdmodel.milestoneLike = gdmilestone | gdgb | gdpb | gdlb | gdcb
+gdmodel.gLike = notAllowed
+gdmodel.oddDecl = notAllowed
+gdmodel.oddDecl_alternation = notAllowed
+gdmodel.oddDecl_sequence = empty
+gdmodel.oddDecl_sequenceOptional = empty
+gdmodel.oddDecl_sequenceOptionalRepeatable = empty
+gdmodel.oddDecl_sequenceRepeatable = notAllowed
+gdmodel.phrase.xml = notAllowed
+gdmodel.specDescLike = notAllowed
+gdmodel.biblLike = gdbibl | gdbiblStruct | gdlistBibl | gdbiblFull
+gdmodel.biblLike_alternation =
+  gdbibl | gdbiblStruct | gdlistBibl | gdbiblFull
+gdmodel.biblLike_sequence = gdbibl, gdbiblStruct, gdlistBibl, gdbiblFull
+gdmodel.biblLike_sequenceOptional =
+  gdbibl?, gdbiblStruct?, gdlistBibl?, gdbiblFull?
+gdmodel.biblLike_sequenceOptionalRepeatable =
+  gdbibl*, gdbiblStruct*, gdlistBibl*, gdbiblFull*
+gdmodel.biblLike_sequenceRepeatable =
+  gdbibl+, gdbiblStruct+, gdlistBibl+, gdbiblFull+
+gdmodel.headLike = gdhead
+gdmodel.headLike_alternation = gdhead
+gdmodel.headLike_sequence = gdhead
+gdmodel.headLike_sequenceOptional = gdhead?
+gdmodel.headLike_sequenceOptionalRepeatable = gdhead*
+gdmodel.headLike_sequenceRepeatable = gdhead+
+gdmodel.labelLike = gddesc | gdlabel
+gdmodel.labelLike_alternation = gddesc | gdlabel
+gdmodel.labelLike_sequence = gddesc, gdlabel
+gdmodel.labelLike_sequenceOptional = gddesc?, gdlabel?
+gdmodel.labelLike_sequenceOptionalRepeatable = gddesc*, gdlabel*
+gdmodel.labelLike_sequenceRepeatable = gddesc+, gdlabel+
+gdmodel.listLike =
+  gdlist
+  | gdlistOrg
+  | gdlistEvent
+  | gdlistPerson
+  | gdlistPlace
+  | gdlistRelation
+  | gdlistNym
+  | gdlistMedia
+gdmodel.listLike_alternation =
+  gdlist
+  | gdlistOrg
+  | gdlistEvent
+  | gdlistPerson
+  | gdlistPlace
+  | gdlistRelation
+  | gdlistNym
+  | gdlistMedia
+gdmodel.listLike_sequence =
+  gdlist,
+  gdlistOrg,
+  gdlistEvent,
+  gdlistPerson,
+  gdlistPlace,
+  gdlistRelation,
+  gdlistNym,
+  gdlistMedia
+gdmodel.listLike_sequenceOptional =
+  gdlist?,
+  gdlistOrg?,
+  gdlistEvent?,
+  gdlistPerson?,
+  gdlistPlace?,
+  gdlistRelation?,
+  gdlistNym?,
+  gdlistMedia?
+gdmodel.listLike_sequenceOptionalRepeatable =
+  gdlist*,
+  gdlistOrg*,
+  gdlistEvent*,
+  gdlistPerson*,
+  gdlistPlace*,
+  gdlistRelation*,
+  gdlistNym*,
+  gdlistMedia*
+gdmodel.listLike_sequenceRepeatable =
+  gdlist+,
+  gdlistOrg+,
+  gdlistEvent+,
+  gdlistPerson+,
+  gdlistPlace+,
+  gdlistRelation+,
+  gdlistNym+,
+  gdlistMedia+
+gdmodel.noteLike = gdnote
+gdmodel.lLike = gdl
+gdmodel.lLike_alternation = gdl
+gdmodel.lLike_sequence = gdl
+gdmodel.lLike_sequenceOptional = gdl?
+gdmodel.lLike_sequenceOptionalRepeatable = gdl*
+gdmodel.lLike_sequenceRepeatable = gdl+
+gdmodel.pLike = gdp
+gdmodel.pLike_alternation = gdp
+gdmodel.pLike_sequence = gdp
+gdmodel.pLike_sequenceOptional = gdp?
+gdmodel.pLike_sequenceOptionalRepeatable = gdp*
+gdmodel.pLike_sequenceRepeatable = gdp+
+gdmodel.stageLike = gdstage
+gdmodel.stageLike_alternation = gdstage
+gdmodel.stageLike_sequence = gdstage
+gdmodel.stageLike_sequenceOptional = gdstage?
+gdmodel.stageLike_sequenceOptionalRepeatable = gdstage*
+gdmodel.stageLike_sequenceRepeatable = gdstage+
+gdmodel.entryPart = notAllowed
+gdmodel.eventLike = gdevent | gdlistEvent
+gdmodel.global.edit = gdgap
+gdmodel.divPart = gdmodel.lLike | gdmodel.pLike | gdlg | gdsp
+gdmodel.persStateLike =
+  gdpersName
+  | gdaffiliation
+  | gdage
+  | gdeducation
+  | gdfaith
+  | gdfloruit
+  | gdlangKnowledge
+  | gdnationality
+  | gdoccupation
+  | gdpersona
+  | gdresidence
+  | gdsex
+  | gdsocecStatus
+  | gdstate
+  | gdtrait
+gdmodel.personLike = gdorg | gdperson | gdpersonGrp
+gdmodel.personPart =
+  gdmodel.biblLike
+  | gdmodel.eventLike
+  | gdmodel.persStateLike
+  | gdname
+  | gdidno
+  | gdbirth
+  | gddeath
+gdmodel.placeNamePart =
+  gdplaceName
+  | gdbloc
+  | gdcountry
+  | gdregion
+  | gdsettlement
+  | gddistrict
+  | gdgeogName
+gdmodel.placeNamePart_alternation =
+  gdplaceName
+  | gdbloc
+  | gdcountry
+  | gdregion
+  | gdsettlement
+  | gddistrict
+  | gdgeogName
+gdmodel.placeNamePart_sequence =
+  gdplaceName,
+  gdbloc,
+  gdcountry,
+  gdregion,
+  gdsettlement,
+  gddistrict,
+  gdgeogName
+gdmodel.placeNamePart_sequenceOptional =
+  gdplaceName?,
+  gdbloc?,
+  gdcountry?,
+  gdregion?,
+  gdsettlement?,
+  gddistrict?,
+  gdgeogName?
+gdmodel.placeNamePart_sequenceOptionalRepeatable =
+  gdplaceName*,
+  gdbloc*,
+  gdcountry*,
+  gdregion*,
+  gdsettlement*,
+  gddistrict*,
+  gdgeogName*
+gdmodel.placeNamePart_sequenceRepeatable =
+  gdplaceName+,
+  gdbloc+,
+  gdcountry+,
+  gdregion+,
+  gdsettlement+,
+  gddistrict+,
+  gdgeogName+
+gdmodel.placeStateLike =
+  gdmodel.placeNamePart
+  | gdclimate
+  | gdlocation
+  | gdpopulation
+  | gdstate
+  | gdterrain
+  | gdtrait
+gdmodel.placeStateLike_alternation =
+  gdmodel.placeNamePart_alternation
+  | gdclimate
+  | gdlocation
+  | gdpopulation
+  | gdstate
+  | gdterrain
+  | gdtrait
+gdmodel.placeStateLike_sequence =
+  gdmodel.placeNamePart_sequence,
+  gdclimate,
+  gdlocation,
+  gdpopulation,
+  gdstate,
+  gdterrain,
+  gdtrait
+gdmodel.placeStateLike_sequenceOptional =
+  gdmodel.placeNamePart_sequenceOptional?,
+  gdclimate?,
+  gdlocation?,
+  gdpopulation?,
+  gdstate?,
+  gdterrain?,
+  gdtrait?
+gdmodel.placeStateLike_sequenceOptionalRepeatable =
+  gdmodel.placeNamePart_sequenceOptionalRepeatable*,
+  gdclimate*,
+  gdlocation*,
+  gdpopulation*,
+  gdstate*,
+  gdterrain*,
+  gdtrait*
+gdmodel.placeStateLike_sequenceRepeatable =
+  gdmodel.placeNamePart_sequenceRepeatable+,
+  gdclimate+,
+  gdlocation+,
+  gdpopulation+,
+  gdstate+,
+  gdterrain+,
+  gdtrait+
+gdmodel.orgPart =
+  gdmodel.eventLike | gdlistOrg | gdlistPerson | gdlistPlace
+gdmodel.publicationStmtPart.agency =
+  gdpublisher | gddistributor | gdauthority
+gdmodel.publicationStmtPart.detail =
+  gdmodel.ptrLike
+  | gdaddress
+  | gddate
+  | gdpubPlace
+  | gdidno
+  | gdavailability
+gdmodel.availabilityPart = gdlicence
+gdmodel.certLike = notAllowed
+gdmodel.descLike = gddesc
+gdmodel.glossLike = gdgloss
+gdmodel.quoteLike = gdquote | gdcit
+gdmodel.quoteLike_alternation = gdquote | gdcit
+gdmodel.quoteLike_sequence = gdquote, gdcit
+gdmodel.quoteLike_sequenceOptional = gdquote?, gdcit?
+gdmodel.quoteLike_sequenceOptionalRepeatable = gdquote*, gdcit*
+gdmodel.quoteLike_sequenceRepeatable = gdquote+, gdcit+
+gdmodel.qLike = gdmodel.quoteLike | gdsaid | gdq | gdfloatingText
+gdmodel.qLike_alternation =
+  gdmodel.quoteLike_alternation | gdsaid | gdq | gdfloatingText
+gdmodel.qLike_sequence =
+  gdmodel.quoteLike_sequence, gdsaid, gdq, gdfloatingText
+gdmodel.qLike_sequenceOptional =
+  gdmodel.quoteLike_sequenceOptional?, gdsaid?, gdq?, gdfloatingText?
+gdmodel.qLike_sequenceOptionalRepeatable =
+  gdmodel.quoteLike_sequenceOptionalRepeatable*,
+  gdsaid*,
+  gdq*,
+  gdfloatingText*
+gdmodel.qLike_sequenceRepeatable =
+  gdmodel.quoteLike_sequenceRepeatable+, gdsaid+, gdq+, gdfloatingText+
+gdmodel.respLike =
+  gdauthor
+  | gdeditor
+  | gdrespStmt
+  | gdmeeting
+  | gdsponsor
+  | gdfunder
+  | gdprincipal
+gdmodel.divWrapper =
+  gdmeeting
+  | gdbyline
+  | gddateline
+  | gdargument
+  | gdepigraph
+  | gdsalute
+  | gddocAuthor
+  | gddocDate
+gdmodel.divTopPart = gdmodel.headLike | gdopener | gdsigned
+gdmodel.divTop = gdmodel.divWrapper | gdmodel.divTopPart
+gdmodel.frontPart.drama = notAllowed
+gdmodel.pLike.front =
+  gdhead
+  | gdbyline
+  | gdargument
+  | gdepigraph
+  | gddocTitle
+  | gdtitlePart
+  | gddocAuthor
+  | gddocEdition
+  | gddocImprint
+  | gddocDate
+gdmodel.divBottomPart = gdtrailer | gdcloser | gdsigned | gdpostscript
+gdmodel.divBottom = gdmodel.divWrapper | gdmodel.divBottomPart
+gdmodel.titlepagePart =
+  gdgraphic
+  | gdbinaryObject
+  | gdbyline
+  | gdargument
+  | gdepigraph
+  | gddocTitle
+  | gdtitlePart
+  | gddocAuthor
+  | gdimprimatur
+  | gddocEdition
+  | gddocImprint
+  | gddocDate
+gdmodel.choicePart =
+  gdsic | gdcorr | gdreg | gdorig | gdunclear | gdabbr | gdexpan
+gdmodel.imprintPart =
+  gdpublisher | gdbiblScope | gdpubPlace | gddistributor
+gdmodel.catDescPart = notAllowed
+gdmodel.addressLike = gdemail | gdaddress | gdaffiliation
+gdmodel.addressLike_alternation = gdemail | gdaddress | gdaffiliation
+gdmodel.addressLike_sequence = gdemail, gdaddress, gdaffiliation
+gdmodel.addressLike_sequenceOptional =
+  gdemail?, gdaddress?, gdaffiliation?
+gdmodel.addressLike_sequenceOptionalRepeatable =
+  gdemail*, gdaddress*, gdaffiliation*
+gdmodel.addressLike_sequenceRepeatable =
+  gdemail+, gdaddress+, gdaffiliation+
+gdmodel.nameLike =
+  gdmodel.nameLike.agent
+  | gdmodel.offsetLike
+  | gdmodel.placeStateLike
+  | gdrs
+  | gdidno
+  | gdmodel.persNamePart
+gdmodel.nameLike_alternation =
+  gdmodel.nameLike.agent_alternation
+  | gdmodel.offsetLike_alternation
+  | gdmodel.placeStateLike_alternation
+  | gdrs
+  | gdidno
+  | gdmodel.persNamePart_alternation
+gdmodel.nameLike_sequence =
+  gdmodel.nameLike.agent_sequence,
+  gdmodel.offsetLike_sequence,
+  gdmodel.placeStateLike_sequence,
+  gdrs,
+  gdidno,
+  gdmodel.persNamePart_sequence
+gdmodel.nameLike_sequenceOptional =
+  gdmodel.nameLike.agent_sequenceOptional?,
+  gdmodel.offsetLike_sequenceOptional?,
+  gdmodel.placeStateLike_sequenceOptional?,
+  gdrs?,
+  gdidno?,
+  gdmodel.persNamePart_sequenceOptional?
+gdmodel.nameLike_sequenceOptionalRepeatable =
+  gdmodel.nameLike.agent_sequenceOptionalRepeatable*,
+  gdmodel.offsetLike_sequenceOptionalRepeatable*,
+  gdmodel.placeStateLike_sequenceOptionalRepeatable*,
+  gdrs*,
+  gdidno*,
+  gdmodel.persNamePart_sequenceOptionalRepeatable*
+gdmodel.nameLike_sequenceRepeatable =
+  gdmodel.nameLike.agent_sequenceRepeatable+,
+  gdmodel.offsetLike_sequenceRepeatable+,
+  gdmodel.placeStateLike_sequenceRepeatable+,
+  gdrs+,
+  gdidno+,
+  gdmodel.persNamePart_sequenceRepeatable+
+gdmodel.global =
+  gdmodel.global.meta
+  | gdmodel.milestoneLike
+  | gdmodel.noteLike
+  | gdmodel.global.edit
+gdmodel.biblPart =
+  gdmodel.respLike
+  | gdmodel.imprintPart
+  | gdseries
+  | gdcitedRange
+  | gdbibl
+  | gdrelatedItem
+  | gdtextLang
+  | gdedition
+  | gdextent
+  | gdavailability
+  | gdlistRelation
+gdmodel.frontPart =
+  gdmodel.frontPart.drama | gdlistBibl | gddivGen | gdtitlePage
+gdmodel.addrPart =
+  gdmodel.nameLike | gdaddrLine | gdstreet | gdpostCode | gdpostBox
+gdmodel.pPart.data =
+  gdmodel.dateLike
+  | gdmodel.measureLike
+  | gdmodel.addressLike
+  | gdmodel.nameLike
+gdmodel.inter =
+  gdmodel.egLike
+  | gdmodel.oddDecl
+  | gdmodel.biblLike
+  | gdmodel.labelLike
+  | gdmodel.listLike
+  | gdmodel.stageLike
+  | gdmodel.qLike
+gdmodel.common = gdmodel.divPart | gdmodel.inter
+gdmodel.phrase =
+  gdmodel.segLike
+  | gdmodel.highlighted
+  | gdmodel.graphicLike
+  | gdmodel.pPart.msdesc
+  | gdmodel.pPart.edit
+  | gdmodel.ptrLike
+  | gdmodel.lPart
+  | gdmodel.phrase.xml
+  | gdmodel.specDescLike
+  | gdmodel.pPart.data
+gdmodel.limitedPhrase =
+  gdmodel.hiLike
+  | gdmodel.emphLike
+  | gdmodel.pPart.msdesc
+  | gdmodel.pPart.editorial
+  | gdmodel.ptrLike
+  | gdmodel.phrase.xml
+  | gdmodel.pPart.data
+gdmodel.divLike = gddiv
+gdmodel.divGenLike = gddivGen
+gdmodel.div1Like = gddiv1
+gdmodel.div2Like = gddiv2
+gdmodel.div3Like = gddiv3
+gdmodel.div4Like = gddiv4
+gdmodel.div5Like = gddiv5
+gdmodel.div6Like = gddiv6
+gdmodel.div7Like = gddiv7
+gdmodel.applicationLike = gdapplication
+gdmodel.teiHeaderPart = gdencodingDesc | gdprofileDesc | gdxenoData
+gdmodel.sourceDescPart = notAllowed
+gdmodel.encodingDescPart =
+  gdschemaRef
+  | gdprojectDesc
+  | gdsamplingDecl
+  | gdeditorialDecl
+  | gdtagsDecl
+  | gdstyleDefDecl
+  | gdrefsDecl
+  | gdlistPrefixDef
+  | gdclassDecl
+  | gdgeoDecl
+  | gdappInfo
+gdmodel.editorialDeclPart =
+  gdcorrection
+  | gdnormalization
+  | gdquotation
+  | gdhyphenation
+  | gdsegmentation
+  | gdstdVals
+  | gdinterpretation
+  | gdpunctuation
+gdmodel.profileDescPart =
+  gdabstract
+  | gdcreation
+  | gdlangUsage
+  | gdtextClass
+  | gdcalendarDesc
+  | gdcorrespDesc
+gdmodel.correspActionPart =
+  gdmodel.dateLike | gdmodel.addressLike | gdmodel.nameLike | gdnote
+gdmodel.correspContextPart = gdmodel.ptrLike | gdmodel.pLike | gdnote
+gdmodel.correspDescPart = gdnote | gdcorrespAction | gdcorrespContext
+gdmodel.resourceLike = gdtext
+gdatt.personal.attributes =
+  gdatt.naming.attributes,
+  gdatt.personal.attribute.full,
+  gdatt.personal.attribute.sort
+gdatt.personal.attribute.full =
+  
+  ## indicates whether the name component is given in full, as an abbreviation or simply as an initial.
+  [ a:defaultValue = "yes" ]
+  attribute full {
+    
+    ## the name component is spelled out in full.
+    "yes"
+    | 
+      ## (abbreviated) the name component is given in an abbreviated form.
+      "abb"
+    | 
+      ## (initial letter) the name component is indicated only by one initial.
+      "init"
+  }?
+gdatt.personal.attribute.sort =
+  
+  ## specifies the sort order of the name component in relation to others within the name.
+  attribute sort { xsd:nonNegativeInteger }?
+gdmodel.placeLike = gdplace
+gdatt.milestoneUnit.attributes = gdatt.milestoneUnit.attribute.unit
+gdatt.milestoneUnit.attribute.unit =
+  
+  ## provides a conventional name for the kind of section changing at this milestone.
+  ## Suggested values include: 1] page; 2] column; 3] line; 4] book; 5] poem; 6] canto; 7] speaker; 8] stanza; 9] act; 10] scene; 11] section; 12] absent; 13] unnumbered
+  attribute unit {
+    
+    ## physical page breaks (synonymous with the pb element).
+    "page"
+    | 
+      ## column breaks.
+      "column"
+    | 
+      ## line breaks (synonymous with the lb element).
+      "line"
+    | 
+      ## any units termed book, liber, etc.
+      "book"
+    | 
+      ## individual poems in a collection.
+      "poem"
+    | 
+      ## cantos or other major sections of a poem.
+      "canto"
+    | 
+      ## changes of speaker or narrator.
+      "speaker"
+    | 
+      ## stanzas within a poem, book, or canto.
+      "stanza"
+    | 
+      ## acts within a play.
+      "act"
+    | 
+      ## scenes within a play or act.
+      "scene"
+    | 
+      ## sections of any kind.
+      "section"
+    | 
+      ## passages not present in the reference edition.
+      "absent"
+    | 
+      ## passages present in the text, but not to be included as part of the reference.
+      "unnumbered"
+    | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+  }
+gdp =
+  
+  ## (paragraph) marks paragraphs in prose. [3.1. Paragraphs 7.2.5. Speech Contents]
+  element tei:p {
+    gdmacro.paraContent
+    >> sch:pattern [
+         id = "Goglia_TEI-p-abstractModel-p-constraint-report-4"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:p"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test =
+               "not(ancestor::floatingText) and (ancestor::tei:p or ancestor::tei:ab)          and not(parent::tei:exemplum                |parent::tei:item                |parent::tei:note                |parent::tei:q                |parent::tei:quote                |parent::tei:remarks                |parent::tei:said                |parent::tei:sp                |parent::tei:stage                |parent::tei:cell                |parent::tei:figure                )"
+             "\x{a}" ~
+             "        Abstract model violation: Paragraphs may not contain other paragraphs or ab elements.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-p-abstractModel-structure-l-constraint-report-5"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:p"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test =
+               "ancestor::tei:l[not(.//tei:note//tei:p[. = current()])]"
+             "\x{a}" ~
+             "        Abstract model violation: Lines may not contain higher-level structural elements such as div, p, or ab.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.fragmentable.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdforeign =
+  
+  ## identifies a word or phrase as belonging to some language other than that of the surrounding text. [3.3.2.1. Foreign Words or Expressions]
+  element tei:foreign {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdemph =
+  
+  ## (emphasized) marks words or phrases which are stressed or emphasized for linguistic or rhetorical effect. [3.3.2.2. Emphatic Words and Phrases 3.3.2. Emphasis, Foreign Words, and Unusual Language]
+  element tei:emph {
+    gdmacro.paraContent, gdatt.global.attributes, empty
+  }
+gdhi =
+  
+  ## (highlighted) marks a word or phrase as graphically distinct from the surrounding text, for reasons concerning which no claim is made. [3.3.2.2. Emphatic Words and Phrases 3.3.2. Emphasis, Foreign Words, and Unusual Language]
+  element tei:hi {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gddistinct =
+  
+  ## identifies any word or phrase which is regarded as linguistically distinct, for example as archaic, technical, dialectal, non-preferred, etc., or as forming part of a sublanguage. [3.3.2.3. Other Linguistically Distinct Material]
+  element tei:distinct {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    
+    ## specifies the sublanguage or register to which the word or phrase is being assigned
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## specifies how the phrase is distinct diachronically
+    attribute time { xsd:string }?,
+    
+    ## specifies how the phrase is distinct diatopically
+    attribute space { xsd:string }?,
+    
+    ## specifies how the phrase is distinct diastratically
+    attribute social { xsd:string }?,
+    empty
+  }
+gdsaid =
+  
+  ## (speech or thought) indicates passages thought or spoken aloud, whether explicitly indicated in the source or not, whether directly or indirectly reported, whether by real people or fictional characters. [3.3.3. Quotation]
+  element tei:said {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.ascribed.attributes,
+    
+    ## may be used to indicate whether the quoted matter is regarded as having been vocalized or signed.
+    [ a:defaultValue = "unknown" ]
+    attribute aloud {
+      xsd:boolean
+      | (
+         ##
+         "unknown"
+         | 
+           ##
+           "inapplicable")
+    }?,
+    
+    ## may be used to indicate whether the quoted matter is regarded as direct or indirect speech.
+    [ a:defaultValue = "true" ]
+    attribute direct {
+      xsd:boolean
+      | (
+         ##
+         "unknown"
+         | 
+           ##
+           "inapplicable")
+    }?,
+    empty
+  }
+gdquote =
+  
+  ## (quotation) contains a phrase or passage attributed by the narrator or author to some agency external to the text. [3.3.3. Quotation 4.3.1. Grouped Texts]
+  element tei:quote {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdq =
+  
+  ## (quoted) contains material which is distinguished from the surrounding text using quotation marks or a similar method, for any one of a variety of reasons including, but not limited to: direct speech or thought, technical terms or jargon, authorial distance, quotations from elsewhere, and passages that are mentioned but not used. [3.3.3. Quotation]
+  element tei:q {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.ascribed.attributes,
+    
+    ## may be used to indicate whether the offset passage is spoken or thought, or to characterize it more finely.
+    ## Suggested values include: 1] spoken; 2] thought; 3] written; 4] soCalled; 5] foreign; 6] distinct; 7] term; 8] emph; 9] mentioned
+    attribute type {
+      
+      ## representation of speech
+      "spoken"
+      | 
+        ## representation of thought, e.g. internal monologue
+        "thought"
+      | 
+        ## quotation from a written source
+        "written"
+      | 
+        ## authorial distance
+        "soCalled"
+      | 
+        ##
+        "foreign"
+      | 
+        ## linguistically distinct
+        "distinct"
+      | 
+        ## technical term
+        "term"
+      | 
+        ## rhetorically emphasized
+        "emph"
+      | 
+        ## refering to itself, not its normal referent
+        "mentioned"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdcit =
+  
+  ## (cited quotation) contains a quotation from some other document, together with a bibliographic reference to its source. In a dictionary it may contain an example text with at least one occurrence of the word form, used in the sense being described, or a translation of the headword, or an example. [3.3.3. Quotation 4.3.1. Grouped Texts 9.3.5.1. Examples]
+  element tei:cit {
+    (gdmodel.qLike
+     | gdmodel.egLike
+     | gdmodel.biblLike
+     | gdmodel.ptrLike
+     | gdmodel.global
+     | gdmodel.entryPart)+,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdmentioned =
+  
+  ## marks words or phrases mentioned, not used. [3.3.3. Quotation]
+  element tei:mentioned {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdsoCalled =
+  
+  ## contains a word or phrase for which the author or narrator indicates a disclaiming of responsibility, for example by the use of scare quotes or italics. [3.3.3. Quotation]
+  element tei:soCalled {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gddesc =
+  
+  ## (description) contains a brief description of the object documented by its parent element, typically a documentation element or an entity. [22.4.1. Description of Components]
+  element tei:desc {
+    gdmacro.limitedContent,
+    gdatt.global.attributes,
+    gdatt.translatable.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdgloss =
+  
+  ## identifies a phrase or word used to provide a gloss or definition for some other word or phrase. [3.3.4. Terms, Glosses, Equivalents, and Descriptions 22.4.1. Description of Components]
+  element tei:gloss {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.translatable.attributes,
+    gdatt.typed.attributes,
+    gdatt.pointing.attributes,
+    gdatt.cReferencing.attributes,
+    empty
+  }
+gdterm =
+  
+  ## contains a single-word, multi-word, or symbolic designation which is regarded as a technical term. [3.3.4. Terms, Glosses, Equivalents, and Descriptions]
+  element tei:term {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.pointing.attributes,
+    gdatt.typed.attributes,
+    gdatt.canonical.attributes,
+    gdatt.sortable.attributes,
+    gdatt.cReferencing.attributes,
+    empty
+  }
+gdsic =
+  
+  ## (Latin for thus or so) contains text reproduced although apparently incorrect or inaccurate. [3.4.1. Apparent Errors]
+  element tei:sic {
+    gdmacro.paraContent, gdatt.global.attributes, empty
+  }
+gdcorr =
+  
+  ## (correction) contains the correct form of a passage apparently erroneous in the copy text. [3.4.1. Apparent Errors]
+  element tei:corr {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdchoice =
+  
+  ## groups a number of alternative encodings for the same point in a text. [3.4. Simple Editorial Changes]
+  element tei:choice {
+    (gdmodel.choicePart | gdchoice)*, gdatt.global.attributes, empty
+  }
+gdreg =
+  
+  ## (regularization) contains a reading which has been regularized or normalized in some sense. [3.4.2. Regularization and
+  ## Normalization 12. Critical Apparatus]
+  element tei:reg {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdorig =
+  
+  ## (original form) contains a reading which is marked as following the original, rather than being normalized or corrected. [3.4.2. Regularization and
+  ## Normalization 12. Critical Apparatus]
+  element tei:orig {
+    gdmacro.paraContent, gdatt.global.attributes, empty
+  }
+gdgap =
+  
+  ## indicates a point where material has been omitted in a transcription, whether for editorial reasons described in the TEI header, as part of sampling practice, or because the material is illegible, invisible, or inaudible. [3.4.3. Additions, Deletions, and Omissions]
+  element tei:gap {
+    (gdmodel.descLike | gdmodel.certLike)*,
+    gdatt.global.attributes,
+    gdatt.timed.attributes,
+    gdatt.editLike.attributes,
+    
+    ## gives the reason for omission
+    ## Suggested values include: 1] cancelled; 2] deleted; 3] editorial; 4] illegible; 5] inaudible; 6] irrelevant; 7] sampling
+    attribute reason {
+      list {
+        (
+         ##
+         "cancelled"
+         | 
+           ##
+           "deleted"
+         | 
+           ## for features omitted from transcription due to editorial policy
+           "editorial"
+         | 
+           ##
+           "illegible"
+         | 
+           ##
+           "inaudible"
+         | 
+           ##
+           "irrelevant"
+         | 
+           ##
+           "sampling"
+         | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" })+
+      }
+    }?,
+    
+    ## in the case of text omitted from the transcription because of deliberate deletion by an identifiable hand, indicates the hand which made the deletion.
+    attribute hand { xsd:anyURI }?,
+    
+    ## in the case of text omitted because of damage, categorizes the cause of the damage, if it can be identified.
+    ## Sample values include: 1] rubbing; 2] mildew; 3] smoke
+    attribute agent {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdadd =
+  
+  ## (addition) contains letters, words, or phrases inserted in the source text by an author, scribe, or a previous annotator or corrector. [3.4.3. Additions, Deletions, and Omissions]
+  element tei:add {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.transcriptional.attributes,
+    gdatt.placement.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gddel =
+  
+  ## (deletion) contains a letter, word, or passage deleted, marked as deleted, or otherwise indicated as superfluous or spurious in the copy text by an author, scribe, or a previous annotator or corrector. [3.4.3. Additions, Deletions, and Omissions]
+  element tei:del {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.transcriptional.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdunclear =
+  
+  ## contains a word, phrase, or passage which cannot be transcribed with certainty because it is illegible or inaudible in the source. [11.3.3.1. Damage, Illegibility, and Supplied Text 3.4.3. Additions, Deletions, and Omissions]
+  element tei:unclear {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    
+    ## indicates why the material is hard to transcribe.
+    attribute reason {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## Where the difficulty in transcription arises from action (partial deletion, etc.) assignable to an identifiable hand, signifies the hand responsible for the action.
+    attribute hand { xsd:anyURI }?,
+    
+    ## Where the difficulty in transcription arises from damage, categorizes the cause of the damage, if it can be identified.
+    ## Sample values include: 1] rubbing; 2] mildew; 3] smoke
+    attribute agent {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdname =
+  
+  ## (name, proper noun) contains a proper noun or noun phrase. [3.5.1. Referring Strings]
+  element tei:name {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdrs =
+  
+  ## (referencing string) contains a general purpose name or referring string. [13.2.1. Personal Names 3.5.1. Referring Strings]
+  element tei:rs {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdemail =
+  
+  ## (electronic mail address) contains an email address identifying a location to which email messages can be delivered. [3.5.2. Addresses]
+  element tei:email {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdaddress =
+  
+  ## contains a postal address, for example of a publisher, an organization, or an individual. [3.5.2. Addresses 2.2.4. Publication, Distribution, Licensing, etc. 3.11.2.4. Imprint, Size of a Document, and Reprint Information]
+  element tei:address {
+    (gdmodel.global*, (gdmodel.addrPart, gdmodel.global*)+),
+    gdatt.global.attributes,
+    empty
+  }
+gdaddrLine =
+  
+  ## (address line) contains one line of a postal address. [3.5.2. Addresses 2.2.4. Publication, Distribution, Licensing, etc. 3.11.2.4. Imprint, Size of a Document, and Reprint Information]
+  element tei:addrLine {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdstreet =
+  
+  ## contains a full street address including any name or number identifying a building as well as the name of the street or route on which it is located. [3.5.2. Addresses]
+  element tei:street {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdpostCode =
+  
+  ## (postal code) contains a numerical or alphanumeric code used as part of a postal address to simplify sorting or delivery of mail. [3.5.2. Addresses]
+  element tei:postCode { text, gdatt.global.attributes, empty }
+gdpostBox =
+  
+  ## (postal box or post office box) contains a number or other identifier for some postal delivery point other than a street address. [3.5.2. Addresses]
+  element tei:postBox { text, gdatt.global.attributes, empty }
+gdnum =
+  
+  ## (number) contains a number, written in any form. [3.5.3. Numbers and
+  ## Measures]
+  element tei:num {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.ranging.attributes,
+    
+    ## indicates the type of numeric value.
+    ## Suggested values include: 1] cardinal; 2] ordinal; 3] fraction; 4] percentage
+    attribute type {
+      
+      ## absolute number, e.g. 21, 21.5
+      "cardinal"
+      | 
+        ## ordinal number, e.g. 21st
+        "ordinal"
+      | 
+        ## fraction, e.g. one half or three-quarters
+        "fraction"
+      | 
+        ## a percentage
+        "percentage"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## supplies the value of the number in standard form.
+    attribute value {
+      xsd:double
+      | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
+      | xsd:decimal
+    }?,
+    empty
+  }
+gdmeasure =
+  
+  ## contains a word or phrase referring to some quantity of an object or commodity, usually comprising a number, a unit, and a commodity name. [3.5.3. Numbers and
+  ## Measures]
+  element tei:measure {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.measurement.attributes,
+    
+    ## specifies the type of measurement in any convenient typology.
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdmeasureGrp =
+  
+  ## (measure group) contains a group of dimensional specifications which relate to the same object, for example the height and width of a manuscript page. [10.3.4. Dimensions]
+  element tei:measureGrp {
+    (text | gdmodel.gLike | gdmodel.measureLike)*,
+    gdatt.global.attributes,
+    gdatt.measurement.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gddate =
+  
+  ## contains a date in any format. [3.5.4. Dates and Times 2.2.4. Publication, Distribution, Licensing, etc. 2.6. The Revision Description 3.11.2.4. Imprint, Size of a Document, and Reprint Information 15.2.3. The Setting Description 13.3.6. Dates and Times]
+  element tei:date {
+    (text | gdmodel.gLike | gdmodel.phrase | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdtime =
+  
+  ## contains a phrase defining a time of day in any format. [3.5.4. Dates and Times]
+  element tei:time {
+    (text | gdmodel.gLike | gdmodel.phrase | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdabbr =
+  
+  ## (abbreviation) contains an abbreviation of any sort. [3.5.5. Abbreviations and Their Expansions]
+  element tei:abbr {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## allows the encoder to classify the abbreviation according to some convenient typology.
+    ## Sample values include: 1] suspension; 2] contraction; 3] brevigraph; 4] superscription; 5] acronym; 6] title; 7] organization; 8] geographic
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdexpan =
+  
+  ## (expansion) contains the expansion of an abbreviation. [3.5.5. Abbreviations and Their Expansions]
+  element tei:expan {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    empty
+  }
+gdptr =
+  
+  ## (pointer) defines a pointer to another location. [3.6. Simple Links and Cross-References 16.1. Links]
+  element tei:ptr {
+    empty
+    >> sch:pattern [
+         id = "Goglia_TEI-ptr-ptrAtts-constraint-report-6"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:ptr"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "@target and @cRef"
+             "Only one of the\x{a}" ~
+             "attributes @target and @cRef may be supplied on "
+             sch:name [ ]
+             "."
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    gdatt.internetMedia.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    gdatt.cReferencing.attributes,
+    empty
+  }
+gdref =
+  
+  ## (reference) defines a reference to another location, possibly modified by additional text or comment. [3.6. Simple Links and Cross-References 16.1. Links]
+  element tei:ref {
+    gdmacro.paraContent
+    >> sch:pattern [
+         id = "Goglia_TEI-ref-refAtts-constraint-report-7"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:ref"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "@target and @cRef"
+             "Only one of the\x{a}" ~
+             "	attributes @target' and @cRef' may be supplied on "
+             sch:name [ ]
+             "\x{a}" ~
+             "               "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    gdatt.internetMedia.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    gdatt.cReferencing.attributes,
+    empty
+  }
+gdlist =
+  
+  ## contains any sequence of items organized as a list. [3.7. Lists]
+  element tei:list {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((gditem, gdmodel.global*)+
+      | (gdheadLabel?,
+         gdheadItem?,
+         (gdlabel, gdmodel.global*, gditem, gdmodel.global*)+)),
+     (gdmodel.divBottom, gdmodel.global*)*)
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-list-gloss-list-must-have-labels-constraint-rule-9"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:list[@type='gloss']"
+           "\x{a}" ~
+           "	              "
+           sch:assert [
+             test = "tei:label"
+             'The content of a "gloss" list should include a sequence of one or more pairs of a label element followed by an item element'
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## describes the nature of the items in the list.
+    ## Suggested values include: 1] gloss; 2] index; 3] instructions; 4] litany; 5] syllogism
+    attribute type {
+      
+      ## each list item glosses some term or concept, which is given by a label element preceding the list item.
+      "gloss"
+      | 
+        ## each list item is an entry in an index such as the alphabetical topical index at the back of a print volume.
+        "index"
+      | 
+        ## each list item is a step in a sequence of instructions, as in a recipe.
+        "instructions"
+      | 
+        ## each list item is one of a sequence of petitions, supplications or invocations, typically in a religious ritual.
+        "litany"
+      | 
+        ## each list item is part of an argument consisting of two or more propositions and a final conclusion derived from them.
+        "syllogism"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gditem =
+  
+  ## contains one component of a list. [3.7. Lists 2.6. The Revision Description]
+  element tei:item {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlabel =
+  
+  ## contains any label or heading used to identify part of a text, typically but not exclusively in a list or glossary. [3.7. Lists]
+  element tei:label {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.placement.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdhead =
+  
+  ## (heading) contains any type of heading, for example the title of a section, or the heading of a list, glossary, manuscript description, etc. [4.2.1. Headings and Trailers]
+  element tei:head {
+    (text
+     | gdlg
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gdmodel.inter
+     | gdmodel.lLike
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.placement.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdheadLabel =
+  
+  ## (heading for list labels) contains the heading for the label or term column in a glossary list or similar structured list. [3.7. Lists]
+  element tei:headLabel {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdheadItem =
+  
+  ## (heading for list items) contains the heading for the item or gloss column in a glossary list or similar structured list. [3.7. Lists]
+  element tei:headItem {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdnote =
+  
+  ## contains a note or annotation. [3.8.1. Notes and Simple Annotation 2.2.6. The Notes Statement 3.11.2.8. Notes and Statement of Language 9.3.5.4. Notes within Entries]
+  element tei:note {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.placement.attributes,
+    gdatt.pointing.attributes,
+    gdatt.typed.attributes,
+    gdatt.written.attributes,
+    
+    ## indicates whether the copy text shows the exact place of reference for the note.
+    [ a:defaultValue = "true" ] attribute anchored { xsd:boolean }?,
+    
+    ## points to the end of the span to which the note is attached, if the note is not embedded in the text at that point.
+    attribute targetEnd {
+      list { xsd:anyURI+ }
+    }?,
+    empty
+  }
+gdindex =
+  
+  ## (index entry) marks a location to be indexed for whatever purpose. [3.8.2. Index Entries]
+  element tei:index {
+    (gdterm, gdindex?)*,
+    gdatt.global.attributes,
+    gdatt.spanning.attributes,
+    
+    ## a single word which follows the rules defining a legal XML name (see ), supplying a name to specify which index (of several) the index entry belongs to.
+    attribute indexName { xsd:Name }?,
+    empty
+  }
+gdmedia =
+  
+  ## indicates the location of any form of external media such as an audio or video clip etc. [3.9. Graphics and Other Non-textual Components]
+  element tei:media {
+    gdmodel.descLike*,
+    gdatt.typed.attributes,
+    gdatt.global.attributes,
+    gdatt.media.attribute.width,
+    gdatt.media.attribute.height,
+    gdatt.media.attribute.scale,
+    gdatt.resourced.attributes,
+    gdatt.declaring.attributes,
+    gdatt.timed.attributes,
+    
+    ## (MIME media type) specifies the applicable multimedia internet mail extension (MIME) media type
+    attribute mimeType {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    },
+    empty
+  }
+gdgraphic =
+  
+  ## indicates the location of a graphic or illustration, either forming part of a text, or providing an image of it. [3.9. Graphics and Other Non-textual Components 11.1. Digital Facsimiles]
+  element tei:graphic {
+    gdmodel.descLike*,
+    gdatt.global.attributes,
+    gdatt.media.attributes,
+    gdatt.resourced.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdbinaryObject =
+  
+  ## provides encoded binary data representing an inline graphic, audio, video or other object. [3.9. Graphics and Other Non-textual Components]
+  element tei:binaryObject {
+    text,
+    gdatt.global.attributes,
+    gdatt.media.attributes,
+    gdatt.timed.attributes,
+    gdatt.typed.attributes,
+    
+    ## The encoding used to encode the binary data. If not specified, this is assumed to be Base64.
+    attribute encoding {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    empty
+  }
+gdmilestone =
+  
+  ## marks a boundary point separating any kind of section of a text, typically but not necessarily indicating a point at which some part of a standard reference system changes, where the change is not represented by a structural element. [3.10.3. Milestone
+  ## Elements]
+  element tei:milestone {
+    empty,
+    gdatt.global.attributes,
+    gdatt.milestoneUnit.attributes,
+    gdatt.typed.attributes,
+    gdatt.edition.attributes,
+    gdatt.spanning.attributes,
+    gdatt.breaking.attributes,
+    empty
+  }
+gdgb =
+  
+  ## (gathering beginning) marks the beginning of a new gathering or quire in a transcribed codex. [3.10.3. Milestone
+  ## Elements]
+  element tei:gb {
+    empty,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.spanning.attributes,
+    gdatt.breaking.attributes,
+    empty
+  }
+gdpb =
+  
+  ## (page beginning) marks the beginning of a new page in a paginated document. [3.10.3. Milestone
+  ## Elements]
+  element tei:pb {
+    empty,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.edition.attributes,
+    gdatt.spanning.attributes,
+    gdatt.breaking.attributes,
+    empty
+  }
+gdlb =
+  
+  ## (line beginning) marks the beginning of a new (typographic) line in some edition or version of a text. [3.10.3. Milestone
+  ## Elements 7.2.5. Speech Contents]
+  element tei:lb {
+    empty,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.edition.attributes,
+    gdatt.spanning.attributes,
+    gdatt.breaking.attributes,
+    empty
+  }
+gdcb =
+  
+  ## (column beginning) marks the beginning of a new column of a text on a multi-column page. [3.10.3. Milestone
+  ## Elements]
+  element tei:cb {
+    empty,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.edition.attributes,
+    gdatt.spanning.attributes,
+    gdatt.breaking.attributes,
+    empty
+  }
+gdanalytic =
+  
+  ## (analytic level) contains bibliographic elements describing an item (e.g. an article or poem) published within a monograph or journal and not as an independent publication. [3.11.2.1. Analytic, Monographic, and Series Levels]
+  element tei:analytic {
+    (gdauthor
+     | gdeditor
+     | gdrespStmt
+     | gdtitle
+     | gdmodel.ptrLike
+     | gddate
+     | gdtextLang
+     | gdidno
+     | gdavailability)*,
+    gdatt.global.attributes,
+    empty
+  }
+gdmonogr =
+  
+  ## (monographic level) contains bibliographic elements describing an item (e.g. a book or journal) published as an independent item (i.e. as a separate physical object). [3.11.2.1. Analytic, Monographic, and Series Levels]
+  element tei:monogr {
+    ((((gdauthor | gdeditor | gdmeeting | gdrespStmt),
+       (gdauthor | gdeditor | gdmeeting | gdrespStmt)*,
+       gdtitle+,
+       (gdmodel.ptrLike | gdidno | gdtextLang | gdeditor | gdrespStmt)*)
+      | ((gdtitle | gdmodel.ptrLike | gdidno)+,
+         (gdtextLang | gdauthor | gdeditor | gdmeeting | gdrespStmt)*)
+      | (gdauthority, gdidno))?,
+     gdavailability*,
+     gdmodel.noteLike*,
+     (gdedition,
+      (gdidno
+       | gdmodel.ptrLike
+       | gdeditor
+       | gdsponsor
+       | gdfunder
+       | gdrespStmt)*)*,
+     gdimprint,
+     (gdimprint | gdextent | gdbiblScope)*),
+    gdatt.global.attributes,
+    empty
+  }
+gdseries =
+  
+  ## (series information) contains information about the series in which a book or other bibliographic item has appeared. [3.11.2.1. Analytic, Monographic, and Series Levels]
+  element tei:series {
+    (text
+     | gdmodel.gLike
+     | gdtitle
+     | gdmodel.ptrLike
+     | gdeditor
+     | gdrespStmt
+     | gdbiblScope
+     | gdidno
+     | gdtextLang
+     | gdmodel.global
+     | gdavailability)*,
+    gdatt.global.attributes,
+    empty
+  }
+gdauthor =
+  
+  ## in a bibliographic reference, contains the name(s) of an author, personal or corporate, of a work; for example in the same form as that provided by a recognized bibliographic name authority. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement]
+  element tei:author {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    empty
+  }
+gdeditor =
+  
+  ## contains a secondary statement of responsibility for a bibliographic item, for example the name of an individual, institution or organization, (or of several such) acting as editor, compiler, translator, etc. [3.11.2.2. Titles, Authors, and Editors]
+  element tei:editor {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    empty
+  }
+gdrespStmt =
+  
+  ## (statement of responsibility) supplies a statement of responsibility for the intellectual content of a text, edition, recording, or series, where the specialized elements for authors, editors, etc. do not suffice or do not apply. May also be used to encode information about individuals or organizations which have played a role in the production or distribution of a bibliographic work. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement 2.2.2. The Edition Statement 2.2.5. The Series Statement]
+  element tei:respStmt {
+    (((gdresp+, gdmodel.nameLike.agent+)
+      | (gdmodel.nameLike.agent+, gdresp+)),
+     gdnote*),
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdresp =
+  
+  ## (responsibility) contains a phrase describing the nature of a person's intellectual responsibility, or an organization's role in the production or distribution of a work. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement 2.2.2. The Edition Statement 2.2.5. The Series Statement]
+  element tei:resp {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdtitle =
+  
+  ## contains a title for any kind of work. [3.11.2.2. Titles, Authors, and Editors 2.2.1. The Title Statement 2.2.5. The Series Statement]
+  element tei:title {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    gdatt.typed.attribute.subtype,
+    gdatt.datable.attributes,
+    
+    ## classifies the title according to some convenient typology.
+    ## Sample values include: 1] main; 2] sub(subordinate) ; 3] alt(alternate) ; 4] short; 5] desc(descriptive) 
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## indicates the bibliographic level for a title, that is, whether it identifies an article, book, journal, series, or unpublished material.
+    attribute level {
+      
+      ## (analytic) the title applies to an analytic item, such as an article, poem, or other work published as part of a larger item.
+      "a"
+      | 
+        ## (monographic) the title applies to a monograph such as a book or other item considered to be a distinct publication, including single volumes of multi-volume works
+        "m"
+      | 
+        ## (journal) the title applies to any serial or periodical publication such as a journal, magazine, or newspaper
+        "j"
+      | 
+        ## (series) the title applies to a series of otherwise distinct publications such as a collection
+        "s"
+      | 
+        ## (unpublished) the title applies to any unpublished material (including theses and dissertations unless published by a commercial press)
+        "u"
+    }?,
+    empty
+  }
+gdmeeting =
+  
+  ## contains the formalized descriptive title for a meeting or conference, for use in a bibliographic description for an item derived from such a meeting, or as a heading or preamble to publications emanating from it. [3.11.2.2. Titles, Authors, and Editors]
+  element tei:meeting {
+    gdmacro.limitedContent,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdimprint =
+  
+  ## groups information relating to the publication or distribution of a bibliographic item. [3.11.2.4. Imprint, Size of a Document, and Reprint Information]
+  element tei:imprint {
+    ((gdclassCode | gdcatRef)*,
+     ((gdmodel.imprintPart | gdmodel.dateLike),
+      gdrespStmt*,
+      gdmodel.global*)+),
+    gdatt.global.attributes,
+    empty
+  }
+gdpublisher =
+  
+  ## provides the name of the organization responsible for the publication or distribution of a bibliographic item. [3.11.2.4. Imprint, Size of a Document, and Reprint Information 2.2.4. Publication, Distribution, Licensing, etc.]
+  element tei:publisher {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdbiblScope =
+  
+  ## (scope of bibliographic reference) defines the scope of a bibliographic reference, for example as a list of page numbers, or a named subdivision of a larger work. [3.11.2.5. Scopes and Ranges in Bibliographic Citations]
+  element tei:biblScope {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.citing.attributes,
+    empty
+  }
+gdcitedRange =
+  
+  ## (cited range) defines the range of cited content, often represented by pages or other units [3.11.2.5. Scopes and Ranges in Bibliographic Citations]
+  element tei:citedRange {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    gdatt.citing.attributes,
+    empty
+  }
+gdpubPlace =
+  
+  ## (publication place) contains the name of the place where a bibliographic item was published. [3.11.2.4. Imprint, Size of a Document, and Reprint Information]
+  element tei:pubPlace {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    empty
+  }
+gdbibl =
+  
+  ## (bibliographic citation) contains a loosely-structured bibliographic citation of which the sub-components may or may not be explicitly tagged. [3.11.1. Methods of Encoding Bibliographic References and Lists of References 2.2.7. The Source Description 15.3.2. Declarable Elements]
+  element tei:bibl {
+    (text
+     | gdmodel.gLike
+     | gdmodel.highlighted
+     | gdmodel.pPart.data
+     | gdmodel.pPart.edit
+     | gdmodel.segLike
+     | gdmodel.ptrLike
+     | gdmodel.biblPart
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    gdatt.typed.attributes,
+    gdatt.sortable.attributes,
+    gdatt.docStatus.attributes,
+    empty
+  }
+gdbiblStruct =
+  
+  ## (structured bibliographic citation) contains a structured bibliographic citation, in which only bibliographic sub-elements appear and in a specified order. [3.11.1. Methods of Encoding Bibliographic References and Lists of References 2.2.7. The Source Description 15.3.2. Declarable Elements]
+  element tei:biblStruct {
+    (gdanalytic*,
+     (gdmonogr, gdseries*)+,
+     (gdmodel.noteLike
+      | gdmodel.ptrLike
+      | gdrelatedItem
+      | gdcitedRange)*),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    gdatt.typed.attributes,
+    gdatt.sortable.attributes,
+    gdatt.docStatus.attributes,
+    empty
+  }
+gdlistBibl =
+  
+  ## (citation list) contains a list of bibliographic citations of any kind. [3.11.1. Methods of Encoding Bibliographic References and Lists of References 2.2.7. The Source Description 15.3.2. Declarable Elements]
+  element tei:listBibl {
+    (gdmodel.headLike*,
+     (gdmodel.biblLike | gdmodel.milestoneLike)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    gdatt.declarable.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdrelatedItem =
+  
+  ## contains or references some other bibliographic item which is related to the present one in some specified manner, for example as a constituent or alternative version of it. [3.11.2.7. Related Items]
+  element tei:relatedItem {
+    ((gdmodel.biblLike | gdmodel.ptrLike)?)
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-relatedItem-targetorcontent1-constraint-report-8"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:relatedItem"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "@target and count( child::* ) > 0"
+             "\x{a}" ~
+             "If the @target attribute on "
+             sch:name [ ]
+             " is used, the\x{a}" ~
+             "relatedItem element must be empty"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-relatedItem-targetorcontent1-constraint-assert-7"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:relatedItem"
+           "\x{a}" ~
+           "               "
+           sch:assert [
+             test = "@target or child::*"
+             "A relatedItem element should have either a 'target' attribute\x{a}" ~
+             "        or a child element to indicate the related bibliographic item"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    
+    ## points to the related bibliographic element by means of an absolute or relative URI reference
+    attribute target { xsd:anyURI }?,
+    empty
+  }
+gdl =
+  
+  ## (verse line) contains a single, possibly incomplete, line of verse. [3.12.1. Core Tags for Verse 3.12. Passages of Verse or Drama 7.2.5. Speech Contents]
+  element tei:l {
+    ((text
+      | gdmodel.gLike
+      | gdmodel.phrase
+      | gdmodel.inter
+      | gdmodel.global)*)
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-l-abstractModel-structure-l-constraint-report-9"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:l"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test =
+               "ancestor::tei:l[not(.//tei:note//tei:l[. = current()])]"
+             "\x{a}" ~
+             "        Abstract model violation: Lines may not contain lines or lg elements.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.fragmentable.attributes,
+    empty
+  }
+gdlg =
+  
+  ## (line group) contains one or more verse lines functioning as a formal unit, e.g. a stanza, refrain, verse paragraph, etc. [3.12.1. Core Tags for Verse 3.12. Passages of Verse or Drama 7.2.5. Speech Contents]
+  element tei:lg {
+    ((gdmodel.divTop | gdmodel.global)*,
+     (gdmodel.lLike | gdmodel.stageLike | gdmodel.labelLike | gdlg),
+     (gdmodel.lLike
+      | gdmodel.stageLike
+      | gdmodel.labelLike
+      | gdmodel.global
+      | gdlg)*,
+     (gdmodel.divBottom, gdmodel.global*)*)
+    >> sch:pattern [
+         id = "Goglia_TEI-lg-atleast1oflggapl-constraint-assert-8"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:lg"
+           "\x{a}" ~
+           "               "
+           sch:assert [
+             test =
+               "count(descendant::tei:lg|descendant::tei:l|descendant::tei:gap) > 0"
+             "An lg element\x{a}" ~
+             "        must contain at least one child l, lg or gap element."
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-lg-abstractModel-structure-l-constraint-report-10"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:lg"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test =
+               "ancestor::tei:l[not(.//tei:note//tei:lg[. = current()])]"
+             "\x{a}" ~
+             "        Abstract model violation: Lines may not contain line groups.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdsp =
+  
+  ## (speech) contains an individual speech in a performance text, or a passage presented as such in a prose or verse text. [3.12.2. Core Tags for Drama 3.12. Passages of Verse or Drama 7.2.2. Speeches and Speakers]
+  element tei:sp {
+    (gdmodel.global*,
+     (gdspeaker, gdmodel.global*)?,
+     ((gdlg
+       | gdmodel.lLike
+       | gdmodel.pLike
+       | gdmodel.listLike
+       | gdmodel.stageLike
+       | gdmodel.qLike),
+      gdmodel.global*)+),
+    gdatt.global.attributes,
+    gdatt.ascribed.attributes,
+    empty
+  }
+gdspeaker =
+  
+  ## contains a specialized form of heading or label, giving the name of one or more speakers in a dramatic text or fragment. [3.12.2. Core Tags for Drama]
+  element tei:speaker {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdstage =
+  
+  ## (stage direction) contains any kind of stage direction within a dramatic text or fragment. [3.12.2. Core Tags for Drama 3.12. Passages of Verse or Drama 7.2.4. Stage Directions]
+  element tei:stage {
+    gdmacro.specialPara,
+    gdatt.ascribed.attributes,
+    gdatt.global.attributes,
+    gdatt.placement.attributes,
+    
+    ## indicates the kind of stage direction.
+    ## Suggested values include: 1] setting; 2] entrance; 3] exit; 4] business; 5] novelistic; 6] delivery; 7] modifier; 8] location; 9] mixed
+    attribute type {
+      list {
+        (
+         ## describes a setting.
+         "setting"
+         | 
+           ## describes an entrance.
+           "entrance"
+         | 
+           ## describes an exit.
+           "exit"
+         | 
+           ## describes stage business.
+           "business"
+         | 
+           ## is a narrative, motivating stage direction.
+           "novelistic"
+         | 
+           ## describes how a character speaks.
+           "delivery"
+         | 
+           ## gives some detail about a character.
+           "modifier"
+         | 
+           ## describes a location.
+           "location"
+         | 
+           ## more than one of the above
+           "mixed"
+         | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" })*
+      }
+    }?,
+    empty
+  }
+gdteiCorpus =
+  
+  ## contains the whole of a TEI encoded corpus, comprising a single corpus header and one or more TEI elements, each containing a single text header and a text. [4. Default Text Structure 15.1. Varieties of Composite Text]
+  element tei:teiCorpus {
+    (gdteiHeader,
+     ((gdmodel.resourceLike+, (gdTEI | gdteiCorpus)*)
+      | (gdTEI | gdteiCorpus)+)),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    
+    ## The version of the TEI scheme
+    [ a:defaultValue = "5.0" ]
+    attribute version {
+      xsd:token { pattern = "[\d]+(\.[\d]+){0,2}" }
+    }?,
+    empty
+  }
+gddivGen =
+  
+  ## (automatically generated text division) indicates the location at which a textual division generated automatically by a text-processing application is to appear. [3.8.2. Index Entries]
+  element tei:divGen {
+    gdmodel.headLike*,
+    gdatt.global.attributes,
+    
+    ## specifies what type of generated text division (e.g. index, table of contents, etc.) is to appear.
+    ## Sample values include: 1] index; 2] toc; 3] figlist; 4] tablist
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdtextLang =
+  
+  ## (text language) describes the languages and writing systems identified within the bibliographic work being described, rather than its description. [3.11.2.4. Imprint, Size of a Document, and Reprint Information 10.6.6. Languages and Writing Systems]
+  element tei:textLang {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    
+    ## (main language) supplies a code which identifies the chief language used in the bibliographic work.
+    attribute mainLang {
+      xsd:language
+      | (
+         ##
+         "")
+    }?,
+    
+    ## (other languages) one or more codes identifying any other languages used in the bibliographic work.
+    attribute otherLangs {
+      list {
+        (xsd:language
+         | (
+            ##
+            ""))*
+      }
+    }?,
+    empty
+  }
+gdatt.patternReplacement.attributes =
+  gdatt.patternReplacement.attribute.matchPattern,
+  gdatt.patternReplacement.attribute.replacementPattern
+gdatt.patternReplacement.attribute.matchPattern =
+  
+  ## specifies a regular expression against which the values of other attributes can be matched.
+  attribute matchPattern { xsd:token }
+gdatt.patternReplacement.attribute.replacementPattern =
+  
+  ## specifies a replacement pattern, that is, the skeleton of a relative or absolute URI containing references to groups in the matchPattern which, once subpattern substitution has been performed, complete the URI.
+  attribute replacementPattern { text }
+gdteiHeader =
+  
+  ## (TEI header) supplies descriptive and declarative metadata associated with a digital resource or set of resources. [2.1.1. The TEI Header and Its Components 15.1. Varieties of Composite Text]
+  element tei:teiHeader {
+    (gdfileDesc, gdmodel.teiHeaderPart*, gdrevisionDesc?),
+    gdatt.global.attributes,
+    empty
+  }
+gdfileDesc =
+  
+  ## (file description) contains a full bibliographic description of an electronic file. [2.2. The File Description 2.1.1. The TEI Header and Its Components]
+  element tei:fileDesc {
+    ((gdtitleStmt,
+      gdeditionStmt?,
+      gdextent?,
+      gdpublicationStmt,
+      gdseriesStmt?,
+      gdnotesStmt?),
+     gdsourceDesc+),
+    gdatt.global.attributes,
+    empty
+  }
+gdtitleStmt =
+  
+  ## (title statement) groups information about the title of a work and those responsible for its content. [2.2.1. The Title Statement 2.2. The File Description]
+  element tei:titleStmt {
+    (gdtitle+, gdmodel.respLike*), gdatt.global.attributes, empty
+  }
+gdsponsor =
+  
+  ## specifies the name of a sponsoring organization or institution. [2.2.1. The Title Statement]
+  element tei:sponsor {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdfunder =
+  
+  ## (funding body) specifies the name of an individual, institution, or organization responsible for the funding of a project or text. [2.2.1. The Title Statement]
+  element tei:funder {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdprincipal =
+  
+  ## (principal researcher) supplies the name of the principal researcher responsible for the creation of an electronic text. [2.2.1. The Title Statement]
+  element tei:principal {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdeditionStmt =
+  
+  ## (edition statement) groups information relating to one edition of a text. [2.2.2. The Edition Statement 2.2. The File Description]
+  element tei:editionStmt {
+    (gdmodel.pLike+ | (gdedition, gdmodel.respLike*)),
+    gdatt.global.attributes,
+    empty
+  }
+gdedition =
+  
+  ## describes the particularities of one edition of a text. [2.2.2. The Edition Statement]
+  element tei:edition {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdextent =
+  
+  ## describes the approximate size of a text stored on some carrier medium or of some other object, digital or non-digital, specified in any convenient units. [2.2.3. Type and Extent of File 2.2. The File Description 3.11.2.4. Imprint, Size of a Document, and Reprint Information 10.7.1. Object Description]
+  element tei:extent {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdpublicationStmt =
+  
+  ## (publication statement) groups information concerning the publication or distribution of an electronic or other text. [2.2.4. Publication, Distribution, Licensing, etc. 2.2. The File Description]
+  element tei:publicationStmt {
+    ((gdmodel.publicationStmtPart.agency,
+      gdmodel.publicationStmtPart.detail*)+
+     | gdmodel.pLike+),
+    gdatt.global.attributes,
+    empty
+  }
+gddistributor =
+  
+  ## supplies the name of a person or other agency responsible for the distribution of a text. [2.2.4. Publication, Distribution, Licensing, etc.]
+  element tei:distributor {
+    gdmacro.phraseSeq, gdatt.global.attributes, empty
+  }
+gdauthority =
+  
+  ## (release authority) supplies the name of a person or other agency responsible for making a work available, other than a publisher or distributor. [2.2.4. Publication, Distribution, Licensing, etc.]
+  element tei:authority {
+    gdmacro.phraseSeq.limited, gdatt.global.attributes, empty
+  }
+gdidno =
+  
+  ## (identifier) supplies any form of identifier used to identify some object, such as a bibliographic item, a person, a title, an organization, etc. in a standardized way. [2.2.4. Publication, Distribution, Licensing, etc. 2.2.5. The Series Statement 3.11.2.4. Imprint, Size of a Document, and Reprint Information]
+  element tei:idno {
+    (text | gdmodel.gLike | gdidno)*,
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    gdatt.datable.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## categorizes the identifier, for example as an ISBN, Social Security number, etc.
+    ## Suggested values include: 1] ISBN; 2] ISSN; 3] DOI; 4] URI; 5] VIAF; 6] ESTC; 7] OCLC
+    attribute type {
+      
+      ## International Standard Book Number: a 13- or (if assigned prior to 2007) 10-digit identifying number assigned by the publishing industry to a published book or similar item, registered with the International ISBN Agency.
+      "ISBN"
+      | 
+        ## International Standard Serial Number: an eight-digit number to uniquely identify a serial publication.
+        "ISSN"
+      | 
+        ## Digital Object Identifier: a unique string of letters and numbers assigned to an electronic document.
+        "DOI"
+      | 
+        ## Uniform Resource Identifier: a string of characters to uniquely identify a resource which usually contains indication of the means of accessing that resource, the name of its host, and its filepath.
+        "URI"
+      | 
+        ## A data number in the Virtual Internet Authority File assigned to link different names in catalogs around the world for the same entity.
+        "VIAF"
+      | 
+        ## English Short-Title Catalogue number: an identifying number assigned to a document in English printed in the British Isles or North America before 1801.
+        "ESTC"
+      | 
+        ## union catalog number in WorldCat representing a resource held by one or more of the member libraries in the global cooperative Online Computer Library Center.
+        "OCLC"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdavailability =
+  
+  ## supplies information about the availability of a text, for example any restrictions on its use or distribution, its copyright status, any licence applying to it, etc. [2.2.4. Publication, Distribution, Licensing, etc.]
+  element tei:availability {
+    (gdmodel.availabilityPart | gdmodel.pLike)+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## supplies a code identifying the current availability of the text.
+    [ a:defaultValue = "unknown" ]
+    attribute status {
+      
+      ## the text is freely available.
+      "free"
+      | 
+        ## the status of the text is unknown.
+        "unknown"
+      | 
+        ## the text is not freely available.
+        "restricted"
+    }?,
+    empty
+  }
+gdlicence =
+  
+  ## contains information about a licence or other legal agreement applicable to the text. [2.2.4. Publication, Distribution, Licensing, etc.]
+  element tei:licence {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdseriesStmt =
+  
+  ## (series statement) groups information about the series, if any, to which a publication belongs. [2.2.5. The Series Statement 2.2. The File Description]
+  element tei:seriesStmt {
+    (gdmodel.pLike+
+     | (gdtitle+, (gdeditor | gdrespStmt)*, (gdidno | gdbiblScope)*)),
+    gdatt.global.attributes,
+    empty
+  }
+gdnotesStmt =
+  
+  ## (notes statement) collects together any notes providing information about a text additional to that recorded in other parts of the bibliographic description. [2.2.6. The Notes Statement 2.2. The File Description]
+  element tei:notesStmt {
+    (gdmodel.noteLike | gdrelatedItem)+, gdatt.global.attributes, empty
+  }
+gdsourceDesc =
+  
+  ## (source description) describes the source from which an electronic text was derived or generated, typically a bibliographic description in the case of a digitized text, or a phrase such as "born digital" for a text which has no previous existence. [2.2.7. The Source Description]
+  element tei:sourceDesc {
+    (gdmodel.pLike+
+     | (gdmodel.biblLike | gdmodel.sourceDescPart | gdmodel.listLike)+),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdbiblFull =
+  
+  ## (fully-structured bibliographic citation) contains a fully-structured bibliographic citation, in which all components of the TEI file description are present. [3.11.1. Methods of Encoding Bibliographic References and Lists of References 2.2. The File Description 2.2.7. The Source Description 15.3.2. Declarable Elements]
+  element tei:biblFull {
+    (((gdtitleStmt,
+       gdeditionStmt?,
+       gdextent?,
+       gdpublicationStmt,
+       gdseriesStmt?,
+       gdnotesStmt?),
+      gdsourceDesc*)
+     | (gdfileDesc, gdprofileDesc)),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    gdatt.docStatus.attributes,
+    empty
+  }
+gdencodingDesc =
+  
+  ## (encoding description) documents the relationship between an electronic text and the source or sources from which it was derived. [2.3. The Encoding Description 2.1.1. The TEI Header and Its Components]
+  element tei:encodingDesc {
+    (gdmodel.encodingDescPart | gdmodel.pLike)+,
+    gdatt.global.attributes,
+    empty
+  }
+gdschemaRef =
+  
+  ## (schema reference) describes or points to a related customization or schema file [2.3.9. The Schema Specification]
+  element tei:schemaRef {
+    gdmodel.descLike?,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.resourced.attributes,
+    
+    ## the identifier used for the customization or schema
+    attribute key { xsd:NCName }?,
+    empty
+  }
+gdprojectDesc =
+  
+  ## (project description) describes in detail the aim or purpose for which an electronic file was encoded, together with any other relevant information concerning the process by which it was assembled or collected. [2.3.1. The Project Description 2.3. The Encoding Description 15.3.2. Declarable Elements]
+  element tei:projectDesc {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdsamplingDecl =
+  
+  ## (sampling declaration) contains a prose description of the rationale and methods used in sampling texts in the creation of a corpus or collection. [2.3.2. The Sampling Declaration 2.3. The Encoding Description 15.3.2. Declarable Elements]
+  element tei:samplingDecl {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdeditorialDecl =
+  
+  ## (editorial practice declaration) provides details of editorial principles and practices applied during the encoding of a text. [2.3.3. The Editorial Practices Declaration 2.3. The Encoding Description 15.3.2. Declarable Elements]
+  element tei:editorialDecl {
+    (gdmodel.pLike | gdmodel.editorialDeclPart)+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdcorrection =
+  
+  ## (correction principles) states how and under what circumstances corrections have been made in the text. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:correction {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## indicates the degree of correction applied to the text.
+    [ a:defaultValue = "unknown" ]
+    attribute status {
+      
+      ## the text has been thoroughly checked and proofread.
+      "high"
+      | 
+        ## the text has been checked at least once.
+        "medium"
+      | 
+        ## the text has not been checked.
+        "low"
+      | 
+        ## the correction status of the text is unknown.
+        "unknown"
+    }?,
+    
+    ## indicates the method adopted to indicate corrections within the text.
+    [ a:defaultValue = "silent" ]
+    attribute method {
+      
+      ## corrections have been made silently
+      "silent"
+      | 
+        ## corrections have been represented using markup
+        "markup"
+    }?,
+    empty
+  }
+gdnormalization =
+  
+  ## indicates the extent of normalization or regularization of the original source carried out in converting it to electronic form. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:normalization {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## indicates the method adopted to indicate normalizations within the text.
+    [ a:defaultValue = "silent" ]
+    attribute method {
+      
+      ## normalization made silently
+      "silent"
+      | 
+        ## normalization represented using markup
+        "markup"
+    }?,
+    empty
+  }
+gdquotation =
+  
+  ## specifies editorial practice adopted with respect to quotation marks in the original. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:quotation {
+    (gdmodel.pLike*)
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-quotation-quotationContents-constraint-report-11"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:quotation"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "not(@marks) and not (tei:p)"
+             "\x{a}" ~
+             "On "
+             sch:name [ ]
+             ", either the @marks attribute should be used, or a paragraph of description provided"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## (quotation marks) indicates whether or not quotation marks have been retained as content within the text.
+    attribute marks {
+      
+      ## no quotation marks have been retained
+      "none"
+      | 
+        ## some quotation marks have been retained
+        "some"
+      | 
+        ## all quotation marks have been retained
+        "all"
+    }?,
+    empty
+  }
+gdhyphenation =
+  
+  ## summarizes the way in which hyphenation in a source text has been treated in an encoded version of it. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:hyphenation {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## (end-of-line) indicates whether or not end-of-line hyphenation has been retained in a text.
+    [ a:defaultValue = "some" ]
+    attribute eol {
+      
+      ## all end-of-line hyphenation has been retained, even though the lineation of the original may not have been.
+      "all"
+      | 
+        ## end-of-line hyphenation has been retained in some cases.
+        "some"
+      | 
+        ## all soft end-of-line hyphenation has been removed: any remaining end-of-line hyphenation should be retained.
+        "hard"
+      | 
+        ## all end-of-line hyphenation has been removed: any remaining hyphenation occurred within the line.
+        "none"
+    }?,
+    empty
+  }
+gdsegmentation =
+  
+  ## describes the principles according to which the text has been segmented, for example into sentences, tone-units, graphemic strata, etc. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:segmentation {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdstdVals =
+  
+  ## (standard values) specifies the format used when standardized date or number values are supplied. [2.3.3. The Editorial Practices Declaration 15.3.2. Declarable Elements]
+  element tei:stdVals {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdinterpretation =
+  
+  ## describes the scope of any analytic or interpretive information added to the text in addition to the transcription. [2.3.3. The Editorial Practices Declaration]
+  element tei:interpretation {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdpunctuation =
+  
+  ## specifies editorial practice adopted with respect to punctuation marks in the original. [2.3.3. The Editorial Practices Declaration 3.2. Treatment of Punctuation]
+  element tei:punctuation {
+    gdmodel.pLike*,
+    gdatt.declarable.attributes,
+    gdatt.global.attributes,
+    
+    ## indicates whether or not punctation marks have been retained as content within the text.
+    attribute marks {
+      
+      ## no punctuation marks have been retained
+      "none"
+      | 
+        ## some punctuation marks have been retained
+        "some"
+      | 
+        ## all punctuation marks have been retained
+        "all"
+    }?,
+    
+    ## indicates whether punctation marks have been captured inside or outside of an adjacent element.
+    attribute placement {
+      
+      ## punctuation marks are captured inside adjacent elements
+      "internal"
+      | 
+        ## punctuation marks are captured outside adjacent elements
+        "external"
+    }?,
+    empty
+  }
+gdtagsDecl =
+  
+  ## (tagging declaration) provides detailed information about the tagging applied to a document. [2.3.4. The Tagging Declaration 2.3. The Encoding Description]
+  element tei:tagsDecl {
+    (gdrendition*, gdnamespace*),
+    gdatt.global.attributes,
+    
+    ## indicates whether the element types listed exhaustively include all those found within text, or represent only a subset.
+    attribute partial { xsd:boolean }?,
+    empty
+  }
+gdtagUsage =
+  
+  ## documents the usage of a specific element within a specified document. [2.3.4. The Tagging Declaration]
+  element tei:tagUsage {
+    gdmacro.limitedContent,
+    gdatt.global.attributes,
+    
+    ## (generic identifier) specifies the name (generic identifier) of the element indicated by the tag, within the namespace indicated by the parent namespace element.
+    attribute gi { xsd:Name },
+    
+    ## specifies the number of occurrences of this element within the text.
+    attribute occurs { xsd:nonNegativeInteger }?,
+    
+    ## (with unique identifier) specifies the number of occurrences of this element within the text which bear a distinct value for the global xml:id attribute.
+    attribute withId { xsd:nonNegativeInteger }?,
+    empty
+  }
+gdnamespace =
+  
+  ## supplies the formal name of the namespace to which the elements documented by its children belong. [2.3.4. The Tagging Declaration]
+  element tei:namespace {
+    gdtagUsage+,
+    gdatt.global.attributes,
+    
+    ## specifies the full formal name of the namespace concerned.
+    attribute name { xsd:anyURI },
+    empty
+  }
+gdrendition =
+  
+  ## supplies information about the rendition or appearance of one or more elements in the source text. [2.3.4. The Tagging Declaration]
+  element tei:rendition {
+    gdmacro.limitedContent,
+    gdatt.global.attributes,
+    gdatt.styleDef.attributes,
+    
+    ## where CSS is used, provides a way of defining pseudo-elements, that is, styling rules applicable to specific sub-portions of an element.
+    ## Sample values include: 1] first-line; 2] first-letter; 3] before; 4] after
+    attribute scope {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## contains a selector or series of selectors specifying the elements to which the contained style description applies, expressed in the language specified in the scheme attribute.
+    attribute selector { xsd:string }?,
+    empty
+  }
+gdstyleDefDecl =
+  
+  ## (style definition language declaration) specifies the name of the formal language in which style or renditional information is supplied elsewhere in the document. The specific version of the scheme may also be supplied. [2.3.5. The Default Style Definition Language Declaration]
+  element tei:styleDefDecl {
+    gdmodel.pLike*,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    gdatt.styleDef.attributes,
+    empty
+  }
+gdrefsDecl =
+  
+  ## (references declaration) specifies how canonical references are constructed for this text. [2.3.6.3. Milestone Method 2.3. The Encoding Description 2.3.6. The Reference System Declaration]
+  element tei:refsDecl {
+    (gdmodel.pLike+ | gdcRefPattern+ | gdrefState+),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdcRefPattern =
+  
+  ## (canonical reference pattern) specifies an expression and replacement pattern for transforming a canonical reference into a URI. [2.3.6.3. Milestone Method 2.3.6. The Reference System Declaration 2.3.6.2. Search-and-Replace Method]
+  element tei:cRefPattern {
+    gdmodel.pLike*,
+    gdatt.global.attributes,
+    gdatt.patternReplacement.attributes,
+    empty
+  }
+gdprefixDef =
+  
+  ## (prefix definition) defines a prefixing scheme used in data.pointer values, showing how abbreviated URIs using the scheme may be expanded into full URIs. [16.2.3. Using Abbreviated Pointers]
+  element tei:prefixDef {
+    gdmodel.pLike*,
+    gdatt.global.attributes,
+    gdatt.patternReplacement.attributes,
+    
+    ## supplies a name which functions as the prefix for an abbreviated pointing scheme such as a private URI scheme. The prefix constitutes the text preceding the first colon.
+    attribute ident {
+      xsd:token { pattern = "[a-z][a-z0-9\+\.\-]*" }
+    },
+    empty
+  }
+gdlistPrefixDef =
+  
+  ## (list of prefix definitions) contains a list of definitions of prefixing schemes used in data.pointer values, showing how abbreviated URIs using each scheme may be expanded into full URIs. [16.2.3. Using Abbreviated Pointers]
+  element tei:listPrefixDef {
+    (gdprefixDef | gdlistPrefixDef)+, gdatt.global.attributes, empty
+  }
+gdrefState =
+  
+  ## (reference state) specifies one component of a canonical reference defined by the milestone method. [2.3.6.3. Milestone Method 2.3.6. The Reference System Declaration]
+  element tei:refState {
+    empty,
+    gdatt.global.attributes,
+    gdatt.milestoneUnit.attributes,
+    gdatt.edition.attributes,
+    
+    ## specifies the fixed length of the reference component.
+    attribute length { xsd:nonNegativeInteger }?,
+    
+    ## (delimiter) supplies a delimiting string following the reference component.
+    attribute delim { xsd:string }?,
+    empty
+  }
+gdclassDecl =
+  
+  ## (classification declarations) contains one or more taxonomies defining any classificatory codes used elsewhere in the text. [2.3.7. The Classification Declaration 2.3. The Encoding Description]
+  element tei:classDecl { gdtaxonomy+, gdatt.global.attributes, empty }
+gdtaxonomy =
+  
+  ## defines a typology either implicitly, by means of a bibliographic citation, or explicitly by a structured taxonomy. [2.3.7. The Classification Declaration]
+  element tei:taxonomy {
+    (((gdcategory | gdtaxonomy)+
+      | ((gdmodel.glossLike | gdmodel.descLike)+,
+         (gdcategory | gdtaxonomy)*))
+     | (gdmodel.biblLike, (gdcategory | gdtaxonomy)*)),
+    gdatt.global.attributes,
+    empty
+  }
+gdcategory =
+  
+  ## contains an individual descriptive category, possibly nested within a superordinate category, within a user-defined taxonomy. [2.3.7. The Classification Declaration]
+  element tei:category {
+    ((gdcatDesc+ | (gdmodel.descLike | gdmodel.glossLike)*),
+     gdcategory*),
+    gdatt.global.attributes,
+    empty
+  }
+gdcatDesc =
+  
+  ## (category description) describes some category within a taxonomy or text typology, either in the form of a brief prose description or in terms of the situational parameters used by the TEI formal textDesc. [2.3.7. The Classification Declaration]
+  element tei:catDesc {
+    (text | gdmodel.limitedPhrase | gdmodel.catDescPart)*,
+    gdatt.global.attributes,
+    empty
+  }
+gdgeoDecl =
+  
+  ## (geographic coordinates declaration) documents the notation and the datum used for geographic coordinates expressed as content of the geo element elsewhere within the document. [2.3.8. The Geographic Coordinates Declaration]
+  element tei:geoDecl {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    
+    ## supplies a commonly used code name for the datum employed.
+    ## Suggested values include: 1] WGS84(World Geodetic System) ; 2] MGRS(Military Grid Reference System) ; 3] OSGB36(ordnance survey great britain) ; 4] ED50(European Datum coordinate system) 
+    [ a:defaultValue = "WGS84" ]
+    attribute datum {
+      
+      ## (World Geodetic System) a pair of numbers to be interpreted as latitude followed by longitude according to the World Geodetic System.
+      "WGS84"
+      | 
+        ## (Military Grid Reference System) the values supplied are geospatial entity object codes, based on
+        "MGRS"
+      | 
+        ## (ordnance survey great britain) the value supplied is to be interpreted as a British National Grid Reference.
+        "OSGB36"
+      | 
+        ## (European Datum coordinate system) the value supplied is to be interpreted as latitude followed by longitude according to the European Datum coordinate system.
+        "ED50"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdappInfo =
+  
+  ## (application information) records information about an application which has edited the TEI file. [2.3.10. The Application Information Element]
+  element tei:appInfo {
+    gdmodel.applicationLike+, gdatt.global.attributes, empty
+  }
+gdapplication =
+  
+  ## provides information about an application which has acted upon the document. [2.3.10. The Application Information Element]
+  element tei:application {
+    (gdmodel.labelLike+, (gdmodel.ptrLike* | gdmodel.pLike*)),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    
+    ## supplies an identifier for the application, independent of its version number or display name.
+    attribute ident { xsd:Name },
+    
+    ## supplies a version number for the application, independent of its identifier or display name.
+    attribute version {
+      xsd:token {
+        pattern = "[\d]+[a-z]*[\d]*(\.[\d]+[a-z]*[\d]*){0,3}"
+      }
+    },
+    empty
+  }
+gdprofileDesc =
+  
+  ## (text-profile description) provides a detailed description of non-bibliographic aspects of a text, specifically the languages and sublanguages used, the situation in which it was produced, the participants and their setting. [2.4. The Profile Description 2.1.1. The TEI Header and Its Components]
+  element tei:profileDesc {
+    gdmodel.profileDescPart*, gdatt.global.attributes, empty
+  }
+gdabstract =
+  
+  ## contains a summary or formal abstract prefixed to an existing source document by the encoder. [2.4.4. Abstracts]
+  element tei:abstract {
+    (gdmodel.pLike | gdmodel.listLike)+, gdatt.global.attributes, empty
+  }
+gdcreation =
+  
+  ## contains information about the creation of a text. [2.4.1. Creation 2.4. The Profile Description]
+  element tei:creation {
+    (text | gdmodel.limitedPhrase | gdlistChange)*,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdlangUsage =
+  
+  ## (language usage) describes the languages, sublanguages, registers, dialects, etc. represented within a text. [2.4.2. Language Usage 2.4. The Profile Description 15.3.2. Declarable Elements]
+  element tei:langUsage {
+    (gdmodel.pLike+ | gdlanguage+),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdlanguage =
+  
+  ## characterizes a single language or sublanguage used within a text. [2.4.2. Language Usage]
+  element tei:language {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    
+    ## (identifier) Supplies a language code constructed as defined in BCP 47 which is used to identify the language documented by this element, and which is referenced by the global xml:lang attribute.
+    attribute ident {
+      xsd:language
+      | (
+         ##
+         "")
+    },
+    
+    ## specifies the approximate percentage (by volume) of the text which uses this language.
+    attribute usage { xsd:nonNegativeInteger }?,
+    empty
+  }
+gdtextClass =
+  
+  ## (text classification) groups information which describes the nature or topic of a text in terms of a standard classification scheme, thesaurus, etc. [2.4.3. The Text Classification]
+  element tei:textClass {
+    (gdclassCode | gdcatRef | gdkeywords)*,
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    empty
+  }
+gdkeywords =
+  
+  ## contains a list of keywords or phrases identifying the topic or nature of a text. [2.4.3. The Text Classification]
+  element tei:keywords {
+    (gdterm+ | gdlist),
+    gdatt.global.attributes,
+    
+    ## identifies the controlled vocabulary within which the set of keywords concerned is defined, for example by a taxonomy element, or by some other resource.
+    attribute scheme { xsd:anyURI }?,
+    empty
+  }
+gdclassCode =
+  
+  ## (classification code) contains the classification code used for this text in some standard classification system. [2.4.3. The Text Classification]
+  element tei:classCode {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    
+    ## identifies the classification system in use, as defined by, e.g. a taxonomy element, or some other resource.
+    attribute scheme { xsd:anyURI },
+    empty
+  }
+gdcatRef =
+  
+  ## (category reference) specifies one or more defined categories within some taxonomy or text typology. [2.4.3. The Text Classification]
+  element tei:catRef {
+    empty,
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    
+    ## identifies the classification scheme within which the set of categories concerned is defined, for example by a taxonomy element, or by some other resource.
+    attribute scheme { xsd:anyURI }?,
+    empty
+  }
+gdcalendarDesc =
+  
+  ## (calendar description) contains a description of the calendar system used in any dating expression found in the text. [2.4. The Profile Description 2.4.5. Calendar Description]
+  element tei:calendarDesc {
+    gdcalendar+, gdatt.global.attributes, empty
+  }
+gdcalendar =
+  
+  ## describes a calendar or dating system used in a dating formula in the text. [2.4.5. Calendar Description]
+  element tei:calendar {
+    gdmodel.pLike+,
+    gdatt.global.attributes,
+    gdatt.pointing.attributes,
+    empty
+  }
+gdcorrespDesc =
+  
+  ## (correspondence
+  ##     description) contains a description of the actions related to one act of correspondence. [2.4.6. Correspondence Description]
+  element tei:correspDesc {
+    (gdmodel.correspDescPart+ | gdmodel.pLike+),
+    gdatt.declarable.attributes,
+    gdatt.canonical.attributes,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdcorrespAction =
+  
+  ## (correspondence action) contains a structured description of the place, the name of a person/organization and the date related to the sending/receiving of a message or any other action related to the correspondence. [2.4.6. Correspondence Description]
+  element tei:correspAction {
+    (gdmodel.correspActionPart+ | gdmodel.pLike+),
+    gdatt.global.attributes,
+    gdatt.typed.attribute.subtype,
+    gdatt.sortable.attributes,
+    
+    ## describes the nature of the action.
+    ## Suggested values include: 1] sent; 2] received; 3] transmitted; 4] redirected; 5] forwarded
+    attribute type {
+      
+      ## information concerning the sending or dispatch of a message.
+      "sent"
+      | 
+        ## information concerning the receipt of a message.
+        "received"
+      | 
+        ## information concerning the transmission of a message, i.e. between the dispatch and the next receipt, redirect or forwarding.
+        "transmitted"
+      | 
+        ## information concerning the redirection of an unread message.
+        "redirected"
+      | 
+        ## information concerning the forwarding of a message.
+        "forwarded"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdcorrespContext =
+  
+  ## (correspondence context) provides references to preceding or following correspondence related to this piece of correspondence. [2.4.6. Correspondence Description]
+  element tei:correspContext {
+    gdmodel.correspContextPart+, gdatt.global.attributes, empty
+  }
+gdxenoData =
+  
+  ## (non-TEI metadata) provides a container element into which metadata in non-TEI formats may be placed. [2.5. Non-TEI Metadata]
+  element tei:xenoData {
+    (text | anyElement-xenoData),
+    gdatt.global.attributes,
+    gdatt.declarable.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdrevisionDesc =
+  
+  ## (revision description) summarizes the revision history for a file. [2.6. The Revision Description 2.1.1. The TEI Header and Its Components]
+  element tei:revisionDesc {
+    (gdlist | gdlistChange | gdchange+),
+    gdatt.global.attributes,
+    gdatt.docStatus.attributes,
+    empty
+  }
+gdchange =
+  
+  ## documents a change or set of changes made during the production of a source document, or during the revision of an electronic file. [2.6. The Revision Description 2.4.1. Creation 11.7. Identifying Changes and Revisions]
+  element tei:change {
+    gdmacro.specialPara,
+    gdatt.ascribed.attributes,
+    gdatt.datable.attributes,
+    gdatt.docStatus.attributes,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    
+    ## points to one or more elements that belong to this change.
+    attribute target {
+      list { xsd:anyURI+ }
+    }?,
+    empty
+  }
+gdlistChange =
+  
+  ## groups a number of change descriptions associated with either the creation of a source text or the revision of an encoded text. [2.6. The Revision Description 11.7. Identifying Changes and Revisions]
+  element tei:listChange {
+    (gdlistChange | gdchange)+,
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    gdatt.typed.attributes,
+    
+    ## indicates whether the ordering of its child change elements is to be considered significant or not
+    [ a:defaultValue = "true" ] attribute ordered { xsd:boolean }?,
+    empty
+  }
+gdTEI =
+  
+  ## (TEI document) contains a single TEI-conformant document, combining a single TEI header with one or more members of the model.resourceLike class. Multiple TEI elements may be combined to form a teiCorpus element. [4. Default Text Structure 15.1. Varieties of Composite Text]
+  element tei:TEI {
+    (gdteiHeader, gdmodel.resourceLike+)
+    >> sch:ns [ prefix = "tei" uri = "http://www.tei-c.org/ns/1.0" ]
+    >> sch:ns [ prefix = "xs" uri = "http://www.w3.org/2001/XMLSchema" ]
+    >> sch:ns [
+         prefix = "rng"
+         uri = "http://relaxng.org/ns/structure/1.0"
+       ],
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    
+    ## specifies the major version number of the TEI Guidelines against which this document is valid.
+    attribute version {
+      xsd:token { pattern = "[\d]+(\.[\d]+){0,2}" }
+    }?,
+    empty
+  }
+gdtext =
+  
+  ## contains a single text of any kind, whether unitary or composite, for example a poem or drama, a collection of essays, a novel, a dictionary, or a corpus sample. [4. Default Text Structure 15.1. Varieties of Composite Text]
+  element tei:text {
+    (gdmodel.global*,
+     (gdfront, gdmodel.global*)?,
+     (gdbody | gdgroup),
+     gdmodel.global*,
+     (gdback, gdmodel.global*)?),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.typed.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdbody =
+  
+  ## (text body) contains the whole body of a single unitary text, excluding any front or back matter. [4. Default Text Structure]
+  element tei:body {
+    (gdmodel.global*,
+     (gdmodel.divTop, (gdmodel.global | gdmodel.divTop)*)?,
+     (gdmodel.divGenLike, (gdmodel.global | gdmodel.divGenLike)*)?,
+     ((gdmodel.divLike, (gdmodel.global | gdmodel.divGenLike)*)+
+      | (gdmodel.div1Like, (gdmodel.global | gdmodel.divGenLike)*)+
+      | ((gdmodel.common, gdmodel.global*)+,
+         ((gdmodel.divLike, (gdmodel.global | gdmodel.divGenLike)*)+
+          | (gdmodel.div1Like,
+             (gdmodel.global | gdmodel.divGenLike)*)+)?)),
+     (gdmodel.divBottom, gdmodel.global*)*),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdgroup =
+  
+  ## contains the body of a composite text, grouping together a sequence of distinct texts (or groups of such texts) which are regarded as a unit for some purpose, for example the collected works of an author, a sequence of prose essays, etc. [4. Default Text Structure 4.3.1. Grouped Texts 15.1. Varieties of Composite Text]
+  element tei:group {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((gdtext | gdgroup), (gdtext | gdgroup | gdmodel.global)*),
+     gdmodel.divBottom*),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdfloatingText =
+  
+  ## contains a single text of any kind, whether unitary or composite, which interrupts the text containing it at any point and after which the surrounding text resumes. [4.3.2. Floating Texts]
+  element tei:floatingText {
+    (gdmodel.global*,
+     (gdfront, gdmodel.global*)?,
+     (gdbody | gdgroup),
+     gdmodel.global*,
+     (gdback, gdmodel.global*)?),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gddiv =
+  
+  ## (text division) contains a subdivision of the front, body, or back of a text. [4.1. Divisions of the Body]
+  element tei:div {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.divLike | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.divLike | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?)
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-div-abstractModel-structure-l-constraint-report-12"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:div"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "ancestor::tei:l"
+             "\x{a}" ~
+             "        Abstract model violation: Lines may not contain higher-level structural elements such as div.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id =
+           "Goglia_TEI-div-abstractModel-structure-p-constraint-report-13"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:div"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test =
+               "ancestor::tei:p or ancestor::tei:ab and not(ancestor::tei:floatingText)"
+             "\x{a}" ~
+             "        Abstract model violation: p and ab may not contain higher-level structural elements such as div.\x{a}" ~
+             "      "
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    gdatt.written.attributes,
+    
+    ## collego un div alla parte di testo cui fa riferimento
+    attribute ref {
+      list { gddata.pointer+ }
+    }?,
+    empty
+  }
+gddiv1 =
+  
+  ## (level-1 text division) contains a first-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div1 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div2Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div2Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv2 =
+  
+  ## (level-2 text division) contains a second-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div2 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div3Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div3Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv3 =
+  
+  ## (level-3 text division) contains a third-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div3 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div4Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div4Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv4 =
+  
+  ## (level-4 text division) contains a fourth-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div4 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div5Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div5Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv5 =
+  
+  ## (level-5 text division) contains a fifth-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div5 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div6Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div6Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv6 =
+  
+  ## (level-6 text division) contains a sixth-level subdivision of the front, body, or back of a text. [4.1.2. Numbered Divisions]
+  element tei:div6 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((((gdmodel.div7Like | gdmodel.divGenLike), gdmodel.global*)+
+       | ((gdmodel.common, gdmodel.global*)+,
+          ((gdmodel.div7Like | gdmodel.divGenLike), gdmodel.global*)*)),
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gddiv7 =
+  
+  ## (level-7 text division) contains the smallest possible subdivision of the front, body or back of a text, larger than a paragraph. [4.1.2. Numbered Divisions]
+  element tei:div7 {
+    ((gdmodel.divTop | gdmodel.global)*,
+     ((gdmodel.common, gdmodel.global*)+,
+      (gdmodel.divBottom, gdmodel.global*)*)?),
+    gdatt.global.attributes,
+    gdatt.divLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdtrailer =
+  
+  ## contains a closing title or footer appearing at the end of a division of a text. [4.2.4. Content of Textual Divisions 4.2. Elements Common to All Divisions]
+  element tei:trailer {
+    (text
+     | gdlg
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gdmodel.inter
+     | gdmodel.lLike
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdbyline =
+  
+  ## contains the primary statement of responsibility given for a work on its title page or at the head or end of the work. [4.2.2. Openers and Closers 4.5. Front Matter]
+  element tei:byline {
+    (text
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gddocAuthor
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    empty
+  }
+gddateline =
+  
+  ## contains a brief description of the place, date, time, etc. of production of a letter, newspaper story, or other work, prefixed or suffixed to it as a kind of heading or trailer. [4.2.2. Openers and Closers]
+  element tei:dateline {
+    (text
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gdmodel.global
+     | gddocDate)*,
+    gdatt.global.attributes,
+    empty
+  }
+gdargument =
+  
+  ## contains a formal list or prose description of the topics addressed by a subdivision of a text. [4.2. Elements Common to All Divisions 4.6. Title Pages]
+  element tei:argument {
+    ((gdmodel.global | gdmodel.headLike)*,
+     (gdmodel.common, gdmodel.global*)+),
+    gdatt.global.attributes,
+    empty
+  }
+gdepigraph =
+  
+  ## contains a quotation, anonymous or attributed, appearing at the start or end of a section or on a title page. [4.2.3. Arguments, Epigraphs, and Postscripts 4.2. Elements Common to All Divisions 4.6. Title Pages]
+  element tei:epigraph {
+    (gdmodel.common | gdmodel.global)*, gdatt.global.attributes, empty
+  }
+gdopener =
+  
+  ## groups together dateline, byline, salutation, and similar phrases appearing as a preliminary group at the start of a division, especially of a letter. [4.2. Elements Common to All Divisions]
+  element tei:opener {
+    (text
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gdargument
+     | gdbyline
+     | gddateline
+     | gdepigraph
+     | gdsalute
+     | gdsigned
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdcloser =
+  
+  ## groups together salutations, datelines, and similar phrases appearing as a final group at the end of a division, especially of a letter. [4.2.2. Openers and Closers 4.2. Elements Common to All Divisions]
+  element tei:closer {
+    (text
+     | gdmodel.gLike
+     | gdsigned
+     | gddateline
+     | gdsalute
+     | gdmodel.phrase
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdsalute =
+  
+  ## (salutation) contains a salutation or greeting prefixed to a foreword, dedicatory epistle, or other division of a text, or the salutation in the closing of a letter, preface, etc. [4.2.2. Openers and Closers]
+  element tei:salute {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdsigned =
+  
+  ## (signature) contains the closing salutation, etc., appended to a foreword, dedicatory epistle, or other division of a text. [4.2.2. Openers and Closers]
+  element tei:signed {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdpostscript =
+  
+  ## contains a postscript, e.g. to a letter. [4.2. Elements Common to All Divisions]
+  element tei:postscript {
+    ((gdmodel.global | gdmodel.divTopPart)*,
+     gdmodel.common,
+     (gdmodel.global | gdmodel.common)*,
+     (gdmodel.divBottomPart, gdmodel.global*)*),
+    gdatt.global.attributes,
+    gdatt.written.attributes,
+    empty
+  }
+gdtitlePage =
+  
+  ## (title page) contains the title page of a text, appearing within the front or back matter. [4.6. Title Pages]
+  element tei:titlePage {
+    (gdmodel.global*,
+     gdmodel.titlepagePart,
+     (gdmodel.titlepagePart | gdmodel.global)*),
+    gdatt.global.attributes,
+    
+    ## classifies the title page according to any convenient typology.
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gddocTitle =
+  
+  ## (document title) contains the title of a document, including all its constituents, as given on a title page. [4.6. Title Pages]
+  element tei:docTitle {
+    (gdmodel.global*, (gdtitlePart, gdmodel.global*)+),
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdtitlePart =
+  
+  ## contains a subsection or division of the title of a work, as indicated on a title page. [4.6. Title Pages]
+  element tei:titlePart {
+    gdmacro.paraContent,
+    gdatt.global.attributes,
+    
+    ## specifies the role of this subdivision of the title.
+    ## Suggested values include: 1] main; 2] sub(subordinate) ; 3] alt(alternate) ; 4] short; 5] desc(descriptive) 
+    [ a:defaultValue = "main" ]
+    attribute type {
+      
+      ## main title of the work
+      "main"
+      | 
+        ## (subordinate) subtitle of the work
+        "sub"
+      | 
+        ## (alternate) alternative title of the work
+        "alt"
+      | 
+        ## abbreviated form of title
+        "short"
+      | 
+        ## (descriptive) descriptive paraphrase of the work
+        "desc"
+      | xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gddocAuthor =
+  
+  ## (document author) contains the name of the author of the document, as given on the title page (often but not always contained in a byline). [4.6. Title Pages]
+  element tei:docAuthor {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.canonical.attributes,
+    empty
+  }
+gdimprimatur =
+  
+  ## contains a formal statement authorizing the publication of a work, sometimes required to appear on a title page or its verso. [4.6. Title Pages]
+  element tei:imprimatur {
+    gdmacro.paraContent, gdatt.global.attributes, empty
+  }
+gddocEdition =
+  
+  ## (document edition) contains an edition statement as presented on a title page of a document. [4.6. Title Pages]
+  element tei:docEdition {
+    gdmacro.paraContent, gdatt.global.attributes, empty
+  }
+gddocImprint =
+  
+  ## (document imprint) contains the imprint statement (place and date of publication, publisher name), as given (usually) at the foot of a title page. [4.6. Title Pages]
+  element tei:docImprint {
+    (text
+     | gdmodel.gLike
+     | gdmodel.phrase
+     | gdpubPlace
+     | gddocDate
+     | gdpublisher
+     | gdmodel.global)*,
+    gdatt.global.attributes,
+    empty
+  }
+gddocDate =
+  
+  ## (document date) contains the date of a document, as given on a title page or in a dateline. [4.6. Title Pages]
+  element tei:docDate {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    
+    ## gives the value of the date in standard form, i.e. YYYY-MM-DD.
+    attribute when {
+      xsd:date
+      | xsd:gYear
+      | xsd:gMonth
+      | xsd:gDay
+      | xsd:gYearMonth
+      | xsd:gMonthDay
+      | xsd:time
+      | xsd:dateTime
+    }?,
+    empty
+  }
+gdfront =
+  
+  ## (front matter) contains any prefatory matter (headers, abstracts, title page, prefaces, dedications, etc.) found at the start of a document, before the main body. [4.6. Title Pages 4. Default Text Structure]
+  element tei:front {
+    ((gdmodel.frontPart
+      | gdmodel.pLike
+      | gdmodel.pLike.front
+      | gdmodel.global)*,
+     (((gdmodel.div1Like,
+        (gdmodel.div1Like | gdmodel.frontPart | gdmodel.global)*)
+       | (gdmodel.divLike,
+          (gdmodel.divLike | gdmodel.frontPart | gdmodel.global)*)),
+      (gdmodel.divBottom, (gdmodel.divBottom | gdmodel.global)*)?)?),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdback =
+  
+  ## (back matter) contains any appendixes, etc. following the main part of a text. [4.7. Back Matter 4. Default Text Structure]
+  element tei:back {
+    ((gdmodel.frontPart
+      | gdmodel.pLike.front
+      | gdmodel.pLike
+      | gdmodel.listLike
+      | gdmodel.global)*,
+     ((gdmodel.div1Like,
+       (gdmodel.frontPart | gdmodel.div1Like | gdmodel.global)*)
+      | (gdmodel.divLike,
+         (gdmodel.frontPart | gdmodel.divLike | gdmodel.global)*))?,
+     (gdmodel.divBottomPart,
+      (gdmodel.divBottomPart | gdmodel.global)*)?),
+    gdatt.global.attributes,
+    gdatt.declaring.attributes,
+    empty
+  }
+gdatt.datable.custom.attributes =
+  gdatt.datable.custom.attribute.when-custom,
+  gdatt.datable.custom.attribute.notBefore-custom,
+  gdatt.datable.custom.attribute.notAfter-custom,
+  gdatt.datable.custom.attribute.from-custom,
+  gdatt.datable.custom.attribute.to-custom,
+  gdatt.datable.custom.attribute.datingPoint,
+  gdatt.datable.custom.attribute.datingMethod
+gdatt.datable.custom.attribute.when-custom =
+  
+  ## supplies the value of a date or time in some custom standard form.
+  attribute when-custom {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.datable.custom.attribute.notBefore-custom =
+  
+  ## specifies the earliest possible date for the event in some custom standard form.
+  attribute notBefore-custom {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.datable.custom.attribute.notAfter-custom =
+  
+  ## specifies the latest possible date for the event in some custom standard form.
+  attribute notAfter-custom {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.datable.custom.attribute.from-custom =
+  
+  ## indicates the starting point of the period in some custom standard form.
+  attribute from-custom {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.datable.custom.attribute.to-custom =
+  
+  ## indicates the ending point of the period in some custom standard form.
+  attribute to-custom {
+    list {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+    }
+  }?
+gdatt.datable.custom.attribute.datingPoint =
+  
+  ## supplies a pointer to some location defining a named point in time with reference to which the datable item is understood to have occurred
+  attribute datingPoint { xsd:anyURI }?
+gdatt.datable.custom.attribute.datingMethod =
+  
+  ## supplies a pointer to a calendar element or other means of interpreting the values of the custom dating attributes.
+  attribute datingMethod { xsd:anyURI }?
+gdmodel.persNamePart =
+  gdsurname
+  | gdforename
+  | gdgenName
+  | gdnameLink
+  | gdaddName
+  | gdroleName
+gdmodel.persNamePart_alternation =
+  gdsurname
+  | gdforename
+  | gdgenName
+  | gdnameLink
+  | gdaddName
+  | gdroleName
+gdmodel.persNamePart_sequence =
+  gdsurname, gdforename, gdgenName, gdnameLink, gdaddName, gdroleName
+gdmodel.persNamePart_sequenceOptional =
+  gdsurname?,
+  gdforename?,
+  gdgenName?,
+  gdnameLink?,
+  gdaddName?,
+  gdroleName?
+gdmodel.persNamePart_sequenceOptionalRepeatable =
+  gdsurname*,
+  gdforename*,
+  gdgenName*,
+  gdnameLink*,
+  gdaddName*,
+  gdroleName*
+gdmodel.persNamePart_sequenceRepeatable =
+  gdsurname+,
+  gdforename+,
+  gdgenName+,
+  gdnameLink+,
+  gdaddName+,
+  gdroleName+
+gdatt.datable.iso.attributes =
+  gdatt.datable.iso.attribute.when-iso,
+  gdatt.datable.iso.attribute.notBefore-iso,
+  gdatt.datable.iso.attribute.notAfter-iso,
+  gdatt.datable.iso.attribute.from-iso,
+  gdatt.datable.iso.attribute.to-iso
+gdatt.datable.iso.attribute.when-iso =
+  
+  ## supplies the value of a date or time in a standard form.
+  attribute when-iso {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+    | xsd:token { pattern = "[0-9.,DHMPRSTWYZ/:+\-]+" }
+  }?
+gdatt.datable.iso.attribute.notBefore-iso =
+  
+  ## specifies the earliest possible date for the event in standard form, e.g. yyyy-mm-dd.
+  attribute notBefore-iso {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+    | xsd:token { pattern = "[0-9.,DHMPRSTWYZ/:+\-]+" }
+  }?
+gdatt.datable.iso.attribute.notAfter-iso =
+  
+  ## specifies the latest possible date for the event in standard form, e.g. yyyy-mm-dd.
+  attribute notAfter-iso {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+    | xsd:token { pattern = "[0-9.,DHMPRSTWYZ/:+\-]+" }
+  }?
+gdatt.datable.iso.attribute.from-iso =
+  
+  ## indicates the starting point of the period in standard form.
+  attribute from-iso {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+    | xsd:token { pattern = "[0-9.,DHMPRSTWYZ/:+\-]+" }
+  }?
+gdatt.datable.iso.attribute.to-iso =
+  
+  ## indicates the ending point of the period in standard form.
+  attribute to-iso {
+    xsd:date
+    | xsd:gYear
+    | xsd:gMonth
+    | xsd:gDay
+    | xsd:gYearMonth
+    | xsd:gMonthDay
+    | xsd:time
+    | xsd:dateTime
+    | xsd:token { pattern = "[0-9.,DHMPRSTWYZ/:+\-]+" }
+  }?
+gdorgName =
+  
+  ## (organization name) contains an organizational name. [13.2.2. Organizational Names]
+  element tei:orgName {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdpersName =
+  
+  ## (personal name) contains a proper noun or proper-noun phrase referring to a person, possibly including one or more of the person's forenames, surnames, honorifics, added names, etc. [13.2.1. Personal Names]
+  element tei:persName {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdsurname =
+  
+  ## contains a family (inherited) name, as opposed to a given, baptismal, or nick name. [13.2.1. Personal Names]
+  element tei:surname {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdforename =
+  
+  ## contains a forename, given or baptismal name. [13.2.1. Personal Names]
+  element tei:forename {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdgenName =
+  
+  ## (generational name component) contains a name component used to distinguish otherwise similar names on the basis of the relative ages or generations of the persons named. [13.2.1. Personal Names]
+  element tei:genName {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdnameLink =
+  
+  ## (name link) contains a connecting phrase or link used within a name but not regarded as part of it, such as van der or of. [13.2.1. Personal Names]
+  element tei:nameLink {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdaddName =
+  
+  ## (additional name) contains an additional name component, such as a nickname, epithet, or alias, or any other descriptive phrase used within a personal name. [13.2.1. Personal Names]
+  element tei:addName {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdroleName =
+  
+  ## contains a name component which indicates that the referent has a particular role or position in society, such as an official title or rank. [13.2.1. Personal Names]
+  element tei:roleName {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdplaceName =
+  
+  ## contains an absolute or relative place name. [13.2.3. Place Names]
+  element tei:placeName {
+    gdmacro.phraseSeq,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.global.attributes,
+    gdatt.personal.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdbloc =
+  
+  ## contains the name of a geo-political unit consisting of two or more nation states or countries. [13.2.3. Place Names]
+  element tei:bloc {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdcountry =
+  
+  ## contains the name of a geo-political unit, such as a nation, country, colony, or commonwealth, larger than or administratively superior to a region and smaller than a bloc. [13.2.3. Place Names]
+  element tei:country {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdregion =
+  
+  ## contains the name of an administrative unit such as a state, province, or county, larger than a settlement, but smaller than a country. [13.2.3. Place Names]
+  element tei:region {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdsettlement =
+  
+  ## contains the name of a settlement such as a city, town, or village identified as a single geo-political or administrative unit. [13.2.3. Place Names]
+  element tei:settlement {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gddistrict =
+  
+  ## contains the name of any kind of subdivision of a settlement, such as a parish, ward, or other administrative or geographic unit. [13.2.3. Place Names]
+  element tei:district {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    empty
+  }
+gdoffset =
+  
+  ## marks that part of a relative temporal or spatial expression which indicates the direction of the offset between the two place names, dates, or times involved in the expression. [13.2.3. Place Names]
+  element tei:offset {
+    gdmacro.phraseSeq,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdgeogName =
+  
+  ## (geographical name) identifies a name associated with some geographical feature such as Windrush Valley or Mount Sinai. [13.2.3. Place Names]
+  element tei:geogName {
+    gdmacro.phraseSeq,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdgeogFeat =
+  
+  ## (geographical feature name) contains a common noun identifying some geographical feature contained within a geographic name, such as valley, mount, etc. [13.2.3. Place Names]
+  element tei:geogFeat {
+    gdmacro.phraseSeq,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.global.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdaffiliation =
+  
+  ## contains an informal description of a person's present or past affiliation with some organization, for example an employer or sponsor. [15.2.2. The Participant Description]
+  element tei:affiliation {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] sponsor; 2] recommend; 3] discredit; 4] pledged
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdage =
+  
+  ## specifies the age of a person. [13.3.2.1. Personal Characteristics]
+  element tei:age {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] western; 2] sui; 3] subjective; 4] objective; 5] inWorld(in world) ; 6] chronological; 7] biological; 8] psychological; 9] functional
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## supplies a numeric code representing the age or age group
+    attribute value { xsd:nonNegativeInteger }?,
+    empty
+  }
+gdbirth =
+  
+  ## contains information about a person's birth, such as its date and place. [15.2.2. The Participant Description]
+  element tei:birth {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] caesarean(caesarean section) ; 2] vaginal(vaginal delivery) ; 3] exNihilo(ex nihilo) ; 4] incorporated; 5] founded; 6] established
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdclimate =
+  
+  ## contains information about the physical climate of a place. [13.3.4.3. States, Traits, and Events]
+  element tei:climate {
+    (gdmodel.headLike*,
+     (gdmodel.pLike+ | gdmodel.labelLike+),
+     (gdmodel.noteLike | gdmodel.biblLike)*,
+     gdclimate*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gddeath =
+  
+  ## contains information about a person's death, such as its date and place. [15.2.2. The Participant Description]
+  element tei:death {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] proclaimed; 2] assumed; 3] verified; 4] clinical; 5] brain; 6] natural; 7] unnatural; 8] fragmentation; 9] dissolution
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdeducation =
+  
+  ## contains a description of the educational experience of a person. [15.2.2. The Participant Description]
+  element tei:education {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] primary; 2] secondary; 3] undergraduate; 4] graduate; 5] residency; 6] apprenticeship
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdevent =
+  
+  ## contains data relating to any kind of significant event associated with a person, place, or organization. [13.3.1. Basic Principles]
+  element tei:event {
+    (gdmodel.headLike*,
+     (gdmodel.pLike+ | gdmodel.labelLike+),
+     (gdmodel.noteLike | gdmodel.biblLike)*,
+     gdevent*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.naming.attributes,
+    gdatt.sortable.attributes,
+    
+    ## indicates the location of an event by pointing to a place element
+    attribute where { xsd:anyURI }?,
+    empty
+  }
+gdfaith =
+  
+  ## specifies the faith, religion, or belief set of a person. [13.3.2.1. Personal Characteristics]
+  element tei:faith {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.canonical.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] practicing; 2] clandestine; 3] patrilineal; 4] matrilineal; 5] convert
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdfloruit =
+  
+  ## contains information about a person's period of activity. [13.3.2.1. Personal Characteristics]
+  element tei:floruit {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    empty
+  }
+gdgeo =
+  
+  ## (geographical coordinates) contains any expression of a set of geographic coordinates, representing a point, line, or area on the surface of the earth in some notation. [13.3.4.1. Varieties of Location]
+  element tei:geo {
+    text, gdatt.global.attributes, gdatt.declaring.attributes, empty
+  }
+gdlangKnowledge =
+  
+  ## (language knowledge) summarizes the state of a person's linguistic knowledge, either as prose or by a list of langKnown elements. [13.3.2.1. Personal Characteristics]
+  element tei:langKnowledge {
+    (gdmodel.pLike | gdlangKnown+),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] listening; 2] speaking; 3] reading; 4] writing
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## supplies one or more valid language tags for the languages specified
+    attribute tags {
+      list {
+        (xsd:language
+         | (
+            ##
+            ""))+
+      }
+    }?,
+    empty
+  }
+gdlangKnown =
+  
+  ## (language known) summarizes the state of a person's linguistic competence, i.e., knowledge of a single language. [15.2.2. The Participant Description]
+  element tei:langKnown {
+    gdmacro.phraseSeq.limited,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    
+    ## supplies a valid language tag for the language concerned.
+    attribute tag {
+      xsd:language
+      | (
+         ##
+         "")
+    },
+    
+    ## a code indicating the person's level of knowledge for this language
+    attribute level {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdlistOrg =
+  
+  ## (list of organizations) contains a list of elements, each of which provides information about an identifiable organization. [13.2.2. Organizational Names]
+  element tei:listOrg {
+    (gdmodel.headLike*,
+     (gdorg | gdlistOrg)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlistEvent =
+  
+  ## (list of events) contains a list of descriptions, each of which provides information about an identifiable event. [13.3.1. Basic Principles]
+  element tei:listEvent {
+    (gdmodel.headLike*,
+     (gdevent | gdlistEvent)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlistPerson =
+  
+  ## (list of persons) contains a list of descriptions, each of which provides information about an identifiable person or a group of people, for example the participants in a language interaction, or the people referred to in a historical source. [13.3.2. The Person Element 15.2. Contextual Information 2.4. The Profile Description 15.3.2. Declarable Elements]
+  element tei:listPerson {
+    (gdmodel.headLike*,
+     (gdmodel.personLike | gdlistPerson)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlistPlace =
+  
+  ## (list of places) contains a list of places, optionally followed by a list of relationships (other than containment) defined amongst them. [2.2.7. The Source Description 13.3.4. Places]
+  element tei:listPlace {
+    (gdmodel.headLike*,
+     (gdmodel.placeLike | gdlistPlace)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlocation =
+  
+  ## defines the location of a place as a set of geographical coordinates, in terms of other named geo-political entities, or as an address. [13.3.4. Places]
+  element tei:location {
+    (gdmodel.labelLike
+     | gdmodel.placeNamePart
+     | gdmodel.offsetLike
+     | gdmodel.measureLike
+     | gdmodel.addressLike
+     | gdmodel.noteLike
+     | gdmodel.biblLike)*,
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    empty
+  }
+gdnationality =
+  
+  ## contains an informal description of a person's present or past nationality or citizenship. [15.2.2. The Participant Description]
+  element tei:nationality {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] birth; 2] naturalised; 3] self-assigned
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdoccupation =
+  
+  ## contains an informal description of a person's trade, profession or occupation. [15.2.2. The Participant Description]
+  element tei:occupation {
+    gdmacro.specialPara,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] primary; 2] other; 3] paid; 4] unpaid
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## indicates the classification system or taxonomy in use, for example by supplying the identifier of a taxonomy element, or pointing to some other resource.
+    attribute scheme { xsd:anyURI }?,
+    
+    ## identifies an occupation code defined within the classification system or taxonomy defined by the scheme attribute.
+    attribute code { xsd:anyURI }?,
+    empty
+  }
+gdorg =
+  
+  ## (organization) provides information about an identifiable organization such as a business, a tribe, or any other grouping of people. [13.2.2. Organizational Names]
+  element tei:org {
+    (gdmodel.headLike*,
+     (gdmodel.pLike*
+      | (gdmodel.labelLike
+         | gdmodel.nameLike
+         | gdmodel.placeLike
+         | gdmodel.orgPart
+         | gdmodel.milestoneLike)*),
+     (gdmodel.noteLike | gdmodel.biblLike)*,
+     gdmodel.personLike*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.editLike.attributes,
+    gdatt.sortable.attributes,
+    
+    ## specifies a primary role or classification for the organization.
+    attribute role {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    empty
+  }
+gdlistRelation =
+  
+  ## provides information about relationships identified amongst people, places, and organizations, either informally as prose or as formally expressed relation links. [13.3.2.3. Personal Relationships]
+  element tei:listRelation {
+    (gdmodel.headLike*,
+     (gdmodel.pLike | (gdrelation | gdlistRelation)+)),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdperson =
+  
+  ## provides information about an identifiable individual, for example a participant in a language interaction, or a person referred to in a historical source. [13.3.2. The Person Element 15.2.2. The Participant Description]
+  element tei:person {
+    (gdmodel.pLike+ | (gdmodel.personPart | gdmodel.global)*),
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.sortable.attributes,
+    
+    ## specifies a primary role or classification for the person.
+    attribute role {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## specifies the sex of the person.
+    attribute sex {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## specifies an age group for the person.
+    attribute age {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdpersona =
+  
+  ## provides information about one of the personalities identified for a given individual, where an individual has multiple personalities. [13.3.2. The Person Element]
+  element tei:persona {
+    (gdmodel.pLike+ | (gdmodel.personPart | gdmodel.global)*),
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.sortable.attributes,
+    
+    ## specifies a primary role or classification for the persona.
+    attribute role {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## specifies the sex of the persona.
+    attribute sex {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## specifies an age group for the persona.
+    attribute age {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdpersonGrp =
+  
+  ## (personal group) describes a group of individuals treated as a single person for analytic purposes. [15.2.2. The Participant Description]
+  element tei:personGrp {
+    (gdmodel.pLike+ | (gdmodel.personPart | gdmodel.global)*),
+    gdatt.global.attributes,
+    gdatt.sortable.attributes,
+    
+    ## specifies the role of this group of participants in the interaction.
+    attribute role {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## specifies the sex of the participant group.
+    attribute sex {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    
+    ## specifies the age group of the participants.
+    attribute age {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## describes informally the size or approximate size of the group for example by means of a number and an indication of accuracy e.g. approx 200.
+    attribute size {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    empty
+  }
+gdplace =
+  
+  ## contains data about a geographic location [13.3.4. Places]
+  element tei:place {
+    (gdmodel.headLike*,
+     (gdmodel.pLike*
+      | (gdmodel.labelLike
+         | gdmodel.placeStateLike
+         | gdmodel.eventLike)*),
+     (gdmodel.noteLike | gdmodel.biblLike | gdidno)*,
+     (gdmodel.placeLike | gdlistPlace)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.editLike.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdpopulation =
+  
+  ## contains information about the population of a place. [13.3.4.3. States, Traits, and Events]
+  element tei:population {
+    (gdmodel.headLike*,
+     ((gdmodel.pLike+ | gdmodel.labelLike+),
+      (gdmodel.noteLike | gdmodel.biblLike)*)?,
+     gdpopulation*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdrelation =
+  
+  ## (relationship) describes any kind of relationship or linkage amongst a specified group of places, events, persons, objects or other items. [13.3.2.3. Personal Relationships]
+  element tei:relation {
+    (gddesc?)
+    >> sch:pattern [
+         id = "Goglia_TEI-relation-reforkeyorname-constraint-assert-9"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:relation"
+           "\x{a}" ~
+           "               "
+           sch:assert [
+             test = "@ref or @key or @name"
+             "One of the attributes  'name', 'ref' or 'key' must be supplied"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id = "Goglia_TEI-relation-activemutual-constraint-report-14"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:relation"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "@active and @mutual"
+             "Only one of the attributes\x{a}" ~
+             "@active and @mutual may be supplied"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ]
+    >> sch:pattern [
+         id = "Goglia_TEI-relation-activepassive-constraint-report-15"
+         "\x{a}" ~
+         "            "
+         sch:rule [
+           context = "tei:relation"
+           "\x{a}" ~
+           "               "
+           sch:report [
+             test = "@passive and not(@active)"
+             "the attribute 'passive'\x{a}" ~
+             "	may be supplied only if the attribute 'active' is\x{a}" ~
+             "	supplied"
+           ]
+           "\x{a}" ~
+           "            "
+         ]
+         "\x{a}" ~
+         "         "
+       ],
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.canonical.attributes,
+    gdatt.sortable.attributes,
+    gdatt.typed.attributes,
+    
+    ## supplies a name for the kind of relationship of which this is an instance.
+    attribute name {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    (
+     ## identifies the active participants in a non-mutual relationship, or all the participants in a mutual one.
+     attribute active {
+       list { xsd:anyURI+ }
+     }?
+     | 
+       ## supplies a list of participants amongst all of whom the relationship holds equally.
+       attribute mutual {
+         list { xsd:anyURI+ }
+       }?),
+    
+    ## identifies the passive participants in a non-mutual relationship.
+    attribute passive {
+      list { xsd:anyURI+ }
+    }?,
+    empty
+  }
+gdresidence =
+  
+  ## describes a person's present or past places of residence. [15.2.2. The Participant Description]
+  element tei:residence {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] primary; 2] secondary; 3] temporary; 4] permanent
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    empty
+  }
+gdsex =
+  
+  ## specifies the sex of a person. [13.3.2.1. Personal Characteristics]
+  element tei:sex {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.editLike.attributes,
+    gdatt.datable.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] explicit; 2] implicit
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## supplies a coded value for sex
+    attribute value {
+      list {
+        xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }+
+      }
+    }?,
+    empty
+  }
+gdsocecStatus =
+  
+  ## (socio-economic status) contains an informal description of a person's perceived social or economic status. [15.2.2. The Participant Description]
+  element tei:socecStatus {
+    gdmacro.phraseSeq,
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attribute.subtype,
+    
+    ## characterizes the element in some sense, using any convenient classification scheme or typology.
+    ## Sample values include: 1] atBirth; 2] atDeath; 3] dependent; 4] inherited; 5] independent
+    attribute type {
+      xsd:token { pattern = "(\p{L}|\p{N}|\p{P}|\p{S})+" }
+    }?,
+    
+    ## identifies the classification system or taxonomy in use, for example by pointing to a locally-defined taxonomy element or by supplying a URI for an externally-defined system.
+    attribute scheme { xsd:anyURI }?,
+    
+    ## identifies a status code defined within the classification system or taxonomy defined by the scheme attribute.
+    attribute code { xsd:anyURI }?,
+    empty
+  }
+gdstate =
+  
+  ## contains a description of some status or quality attributed to a person, place, or organization often at some specific time or for a specific date range. [13.3.1. Basic Principles 13.3.2.1. Personal Characteristics]
+  element tei:state {
+    (gdstate+
+     | (gdmodel.headLike*,
+        gdmodel.pLike+,
+        (gdmodel.noteLike | gdmodel.biblLike)*)
+     | (gdmodel.labelLike | gdmodel.noteLike | gdmodel.biblLike)*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.typed.attributes,
+    gdatt.naming.attributes,
+    empty
+  }
+gdterrain =
+  
+  ## contains information about the physical terrain of a place. [13.3.4.3. States, Traits, and Events]
+  element tei:terrain {
+    (gdmodel.headLike*,
+     (gdmodel.pLike+ | gdmodel.labelLike+),
+     (gdmodel.noteLike | gdmodel.biblLike)*,
+     gdterrain*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdtrait =
+  
+  ## contains a description of some status or quality attributed to a person, place, or organization typically, but not necessarily, independent of the volition or action of the holder and usually not at some specific time or for a specific date range. [13.3.1. Basic Principles 13.3.2.1. Personal Characteristics]
+  element tei:trait {
+    (gdtrait+
+     | (gdmodel.headLike*,
+        gdmodel.pLike+,
+        (gdmodel.noteLike | gdmodel.biblLike)*)
+     | (gdmodel.labelLike | gdmodel.noteLike | gdmodel.biblLike)*),
+    gdatt.global.attributes,
+    gdatt.datable.attributes,
+    gdatt.editLike.attributes,
+    gdatt.naming.attributes,
+    gdatt.typed.attributes,
+    empty
+  }
+gdnym =
+  
+  ## (canonical name) contains the definition for a canonical name or name component of any kind. [13.3.5. Names and Nyms]
+  element tei:nym {
+    (gdmodel.entryPart*, gdmodel.pLike*, gdnym*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.sortable.attributes,
+    
+    ## points to constituent nyms
+    attribute parts {
+      list { xsd:anyURI+ }
+    }?,
+    empty
+  }
+gdlistNym =
+  
+  ## (list of canonical names) contains a list of nyms, that is, standardized names for any thing. [13.3.5. Names and Nyms]
+  element tei:listNym {
+    (gdmodel.headLike*,
+     (gdnym | gdlistNym)+,
+     (gdrelation | gdlistRelation)*),
+    gdatt.global.attributes,
+    gdatt.typed.attributes,
+    gdatt.declarable.attributes,
+    gdatt.sortable.attributes,
+    empty
+  }
+gdlistMedia =
+  
+  ## contiene una lista di entita' nominate che non sono persone/nomi/ organizzazioni/luoghi ma fanno parte del mondo mediatico (es. nomi propri di programmi tv, spot pubblicitari, applicazioni, ...)
+  element listMedia { gdmacro.anyXML, gdatt.global.attributes, empty }
+start = gdTEI | gdteiCorpus
